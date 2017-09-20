@@ -1,4 +1,5 @@
 # OwlHowl
+A location-based anonymous messaging service.
 ## Members
 * Will Graham
 * Brandon Mondile
