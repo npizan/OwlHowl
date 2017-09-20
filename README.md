@@ -6,3 +6,4 @@ A location-based anonymous messaging service.
 * Ryan Godfrey
 * Adam Jasper
 * Cullen Buchanan
+* Leif Watson
