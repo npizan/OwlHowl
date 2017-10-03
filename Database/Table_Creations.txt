@@ -1,0 +1,9 @@
+
+//Test table
+CREATE TABLE `Owlhowl`.`test` (
+  `testID` INT NOT NULL AUTO_INCREMENT,
+  `message` VARCHAR(45) NULL,
+  `lat` VARCHAR(45) NULL,
+  `lng` VARCHAR(45) NULL,
+  PRIMARY KEY (`testID`))
+COMMENT = 'Test table for the app to test connection to.';

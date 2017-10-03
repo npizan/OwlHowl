@@ -1,0 +1,5 @@
+//Insert into the test table
+// x, y, z need to be the values to insert
+INSERT INTO Owlhowl.test(message, lat, lng)
+	VALUES
+    (x, y, z);
