@@ -34,6 +34,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Main class. Sets up and interacts with the map.
+ *
+ * @author Ryan Godfrey, Adam, Leif, Will, Brandon, Cullen
+ * @version 1.awesome
+ */
+
 public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap; // creates the map
@@ -180,13 +187,12 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 double longi = location.getLongitude();
                 LatLng ll = new LatLng(latti, longi);
                 latlog = ll;
-
-            } else {
-                System.out.print("");
             }
         }
         return latlog;
     }
+
+
 
 
 
@@ -219,7 +225,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         // Get current location and focus upon start up
         LatLng myLocation = getLocation();
         // move the camera to that location and zoom in
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 11.0f));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 13.0f));
         // Draw the circle that surrounds that location
         circle = drawCircle(myLocation);
 
