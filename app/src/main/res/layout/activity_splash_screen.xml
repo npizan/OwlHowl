@@ -14,9 +14,9 @@
         android:orientation="vertical">
 
         <ImageView
-            android:src="@drawable/owlhowl"
+            android:src="@drawable/owlhowlsplsh"
             android:layout_gravity="center"
-            android:layout_width="500dp"
+            android:layout_width="700dp"
             android:layout_height="700dp"
             tools:layout_editor_absoluteY="656dp"
             tools:layout_editor_absoluteX="383dp" />
