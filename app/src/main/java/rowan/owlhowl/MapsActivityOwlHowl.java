@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.provider.Telephony;
 import android.support.annotation.NonNull;
@@ -31,8 +32,21 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.net.URL;
+import java.net.HttpURLConnection;
+
 
 public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyCallback {
 
@@ -112,6 +126,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             public void onClick(View v) {
                 EditText postText = (EditText) findViewById(R.id.etLocationEntry);
                 String pos = postText.getText().toString();
+                new SendPostRequest(pos).execute();
                 postText.setText("");
             }
         });
@@ -200,6 +215,74 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 .strokeWidth(3);
         return mMap.addCircle(options);
     }
+
+    /**
+     * Asynchronous POST request.
+     * All network operations have to be done off the main thread.
+     * This allows UI to function normally while this is done in background
+     */
+    public class SendPostRequest extends AsyncTask<String, Void, String>{
+
+        private String message;
+        public SendPostRequest(String s){
+            message=s;
+        }
+        protected void onPreExecute(){}
+
+        protected String doInBackground(String... arg0){
+            HttpURLConnection myConnection = null;
+            try{
+                URL owlHowlPostEndpoint = new URL("ec2-34-230-76-33.compute-1.amazonaws.com:8080/message");
+                //build request json
+                JSONObject json = new JSONObject();
+                json.put("message", message);
+                json.put("lat", getLocation().latitude);
+                json.put("lng", getLocation().longitude);
+                //Set connection
+                myConnection = (HttpURLConnection) owlHowlPostEndpoint.openConnection();
+                myConnection.setReadTimeout(10000);
+                myConnection.setConnectTimeout(10000);
+                myConnection.setRequestMethod("POST");
+                myConnection.setDoInput(true);
+                myConnection.setDoOutput(true);
+                myConnection.setChunkedStreamingMode(0);
+                //Write the data
+                OutputStream os = myConnection.getOutputStream();
+                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+                bw.write((json.toString()));
+                bw.flush();
+                bw.close();
+                os.close();
+
+                int responseCode = myConnection.getResponseCode();
+
+                if(responseCode == HttpURLConnection.HTTP_OK){
+                    BufferedReader in = new BufferedReader(new InputStreamReader(myConnection.getInputStream()));
+                    StringBuffer sb = new StringBuffer("");
+                    String line = "";
+                    while((line = in.readLine()) != null){
+                        sb.append(line);
+                        break;
+                    }
+                    in.close();
+                    return sb.toString();
+                }
+                else{
+                    return "Error : "+responseCode;
+                }
+            }catch(Exception e){
+                return "Caught exception: "+e.getMessage();
+            }finally{
+                myConnection.disconnect();
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result){
+            Toast.makeText(getApplicationContext(),result,Toast.LENGTH_LONG).show();
+        }
+    }
+
 
     //*********** End of misc methods area ***********************************
 

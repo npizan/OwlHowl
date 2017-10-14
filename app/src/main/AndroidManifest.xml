@@ -8,6 +8,12 @@
          location permissions for the 'MyLocation' functionality. 
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!--
+        Application needs to be able to access the internet. This is not considered
+        a dangerous permission and does not need to be requested during runtime.
+        (on devices running API level 23 or higher)
+    -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
