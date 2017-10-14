@@ -133,7 +133,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             public void onClick(View v) {
                 EditText postText = (EditText) findViewById(R.id.etLocationEntry);
                 String pos = postText.getText().toString();
-                new SendPostRequest(pos).execute();
+                new SendPostRequest().execute(pos);
                 postText.setText("");
             }
         });
@@ -228,20 +228,13 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
      * This allows UI to function normally while this is done in background
      */
     public class SendPostRequest extends AsyncTask<String, Void, String>{
-
-        private String message;
-        public SendPostRequest(String s){
-            message=s;
-        }
-        protected void onPreExecute(){}
-
         protected String doInBackground(String... arg0){
             HttpURLConnection myConnection = null;
             try{
-                URL owlHowlPostEndpoint = new URL("ec2-34-230-76-33.compute-1.amazonaws.com:8080/message");
+                URL owlHowlPostEndpoint = new URL("http://ec2-34-230-76-33.compute-1.amazonaws.com:8080/message");
                 //build request json
                 JSONObject json = new JSONObject();
-                json.put("message", message);
+                json.put("message", arg0[0]);
                 json.put("lat", getLocation().latitude);
                 json.put("lng", getLocation().longitude);
                 //Set connection
@@ -274,7 +267,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                     return sb.toString();
                 }
                 else{
-                    return "Error : "+responseCode;
+                    return "HTTP Error : "+responseCode;
                 }
             }catch(Exception e){
                 return "Caught exception: "+e.getMessage();
