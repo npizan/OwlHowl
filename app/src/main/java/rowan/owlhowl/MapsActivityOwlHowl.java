@@ -47,6 +47,13 @@ import java.util.List;
 import java.net.URL;
 import java.net.HttpURLConnection;
 
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.widget.ExpandableListView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Main class. Sets up and interacts with the map.
@@ -70,6 +77,11 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
     LatLng myLocation;
     Circle circle;
     List<Marker> mMarkers = new ArrayList<Marker>();
+    //Temp
+    ExpandableListView expandableListView;
+
+
+
 
     // Sets the map up.  This is called first.  When the
     // screen is tilted it will start here by setting up
@@ -78,6 +90,8 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps_owl_howl);
+
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -89,6 +103,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MapsActivityOwlHowl.this,Pop.class));
+
             }
         });
 
