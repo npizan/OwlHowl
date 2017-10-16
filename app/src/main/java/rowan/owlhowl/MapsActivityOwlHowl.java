@@ -42,10 +42,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.net.URL;
 import java.net.HttpURLConnection;
+import java.util.Map;
 
 
 /**
@@ -232,31 +235,44 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             HttpURLConnection myConnection = null;
             try{
                 URL owlHowlPostEndpoint = new URL("http://ec2-34-230-76-33.compute-1.amazonaws.com:8080/message");
-                //build request json
-                JSONObject json = new JSONObject();
-                json.put("message", arg0[0]);
-                json.put("lat", getLocation().latitude);
-                json.put("lng", getLocation().longitude);
+                //build request data
+                Map<String, Object> params = new LinkedHashMap<>();
+                params.put("message", arg0[0]);
+                params.put("lat", getLocation().latitude);
+                params.put("lng", getLocation().longitude);
+                StringBuilder postData = new StringBuilder();
+                for (Map.Entry<String, Object> param : params.entrySet()) {
+                    if (postData.length() != 0) {
+                        postData.append('&');
+                    }
+                    postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+                    postData.append('=');
+                    postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+                }
+                byte[] postDataBytes =postData.toString().getBytes("UTF-8");
+
                 //Set connection
                 myConnection = (HttpURLConnection) owlHowlPostEndpoint.openConnection();
                 myConnection.setReadTimeout(10000);
                 myConnection.setConnectTimeout(10000);
                 myConnection.setRequestMethod("POST");
-                myConnection.setDoInput(true);
                 myConnection.setDoOutput(true);
-                myConnection.setChunkedStreamingMode(0);
+                myConnection.setDoInput(true);
+                myConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                myConnection.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
                 //Write the data
-                OutputStream os = myConnection.getOutputStream();
-                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-                bw.write((json.toString()));
-                bw.flush();
-                bw.close();
-                os.close();
+                myConnection.getOutputStream().write(postDataBytes);
+//                OutputStream os = myConnection.getOutputStream();
+//                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+//                bw.write(String.valueOf(postDataBytes));
+//                bw.flush();
+//                bw.close();
+//                os.close();
 
                 int responseCode = myConnection.getResponseCode();
 
                 if(responseCode == HttpURLConnection.HTTP_OK){
-                    BufferedReader in = new BufferedReader(new InputStreamReader(myConnection.getInputStream()));
+                    BufferedReader in = new BufferedReader(new InputStreamReader(myConnection.getInputStream(), "UTF-8"));
                     StringBuffer sb = new StringBuffer("");
                     String line = "";
                     while((line = in.readLine()) != null){
