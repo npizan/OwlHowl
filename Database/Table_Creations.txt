@@ -17,28 +17,36 @@ CREATE TABLE `device` (
 COMMENT='This table is to hold the unique identification for each device.';
 
 //Messages table
-CREATE TABLE `Owlhowl`.`message` (
-  `messageID` INT NOT NULL AUTO_INCREMENT,
-  `message` VARCHAR(140) NOT NULL,
-  `lat` DOUBLE NOT NULL,
-  `lng` DOUBLE NOT NULL,
-  `deviceID` INT NOT NULL COMMENT 'FK To connect back to a posting device.',
-  `handleID` VARCHAR(45) NOT NULL COMMENT 'Relate a given handle to a message.',
-  PRIMARY KEY (`messageID`))
-COMMENT = 'This table is to hold the messages and the location in which they were posted.';
+CREATE TABLE `message` (
+  `messageID` int(11) NOT NULL AUTO_INCREMENT,
+  `message` varchar(140) NOT NULL,
+  `lat` double NOT NULL,
+  `lng` double NOT NULL,
+  `deviceID` int(11) NOT NULL COMMENT 'FK To connect back to a posting device.',
+  `handleID` int(11) NOT NULL COMMENT 'Relate a given handle to a message.',
+  PRIMARY KEY (`messageID`),
+  KEY `deviceID_idx` (`deviceID`),
+  KEY `handleID_idx` (`handleID`),
+  CONSTRAINT `deviceID` FOREIGN KEY (`deviceID`) REFERENCES `device` (`deviceID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `handleID` FOREIGN KEY (`handleID`) REFERENCES `handle` (`handleID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='This table is to hold the messages and the location in which they were posted.';
 
 //Handle Table
-CREATE TABLE `Owlhowl`.`handle` (
-  `handleID` INT NOT NULL AUTO_INCREMENT,
-  `handle` VARCHAR(45) NOT NULL,
-  `deviceID` VARCHAR(45) NOT NULL COMMENT 'FK to relate a given handle to a single device.',
-  PRIMARY KEY (`handleID`))
-COMMENT = 'This table will be truncated daily.';
+CREATE TABLE `handle` (
+  `handleID` int(11) NOT NULL AUTO_INCREMENT,
+  `handle` varchar(45) NOT NULL,
+  `deviceID` int(11) NOT NULL COMMENT 'FK to relate a given handle to a single device.',
+  PRIMARY KEY (`handleID`),
+  KEY `deviceID_idx` (`deviceID`),
+  CONSTRAINT `deviceID2` FOREIGN KEY (`deviceID`) REFERENCES `device` (`deviceID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='This table will be truncated daily.';
 
 //Comments table (if we get that far)
-CREATE TABLE `Owlhowl`.`comment` (
-  `commentID` INT NOT NULL AUTO_INCREMENT,
-  `comment` VARCHAR(140) NOT NULL,
-  `messageID` INT NOT NULL COMMENT 'FK to relate it to the message it was posted to.',
-  PRIMARY KEY (`commentID`))
-COMMENT = 'This table is for a comments to a post';
+CREATE TABLE `comment` (
+  `commentID` int(11) NOT NULL AUTO_INCREMENT,
+  `comment` varchar(140) NOT NULL,
+  `messageID` int(11) NOT NULL COMMENT 'FK to relate it to the message it was posted to.',
+  PRIMARY KEY (`commentID`),
+  KEY `messageID_idx` (`messageID`),
+  CONSTRAINT `messageID` FOREIGN KEY (`messageID`) REFERENCES `message` (`messageID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='This table is for a comments to a post';
