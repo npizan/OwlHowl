@@ -105,6 +105,8 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
 
             @Override
             public void onClick(View v) {
+                new SendGetRequest().execute();
+                //opens view of messages
                 startActivity(new Intent(MapsActivityOwlHowl.this,Pop.class));
 
             }
@@ -277,17 +279,66 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 myConnection.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
                 //Write the data
                 myConnection.getOutputStream().write(postDataBytes);
-//                OutputStream os = myConnection.getOutputStream();
-//                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-//                bw.write(String.valueOf(postDataBytes));
-//                bw.flush();
-//                bw.close();
-//                os.close();
 
                 int responseCode = myConnection.getResponseCode();
 
                 if(responseCode == HttpURLConnection.HTTP_OK){
                     BufferedReader in = new BufferedReader(new InputStreamReader(myConnection.getInputStream(), "UTF-8"));
+                    StringBuffer sb = new StringBuffer("");
+                    String line = "";
+                    while((line = in.readLine()) != null){
+                        sb.append(line);
+                        break;
+                    }
+                    in.close();
+                    return sb.toString();
+                }
+                else{
+                    return "HTTP Error : "+responseCode;
+                }
+            }catch(Exception e){
+                return "Caught exception: "+e.getMessage();
+            }finally{
+                myConnection.disconnect();
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result){
+            Toast.makeText(getApplicationContext(),result,Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+    public class SendGetRequest extends AsyncTask<String, Void, String>{
+        protected String doInBackground(String... arg0){
+            HttpURLConnection myConnection = null;
+            try{
+                //build URL/Get data
+                Map<String, Object> params = new LinkedHashMap<>();
+                params.put("lat", getLocation().latitude);
+                params.put("lng", getLocation().longitude);
+                StringBuilder URLend = new StringBuilder();
+                for (Map.Entry<String, Object> param : params.entrySet()) {
+                    if (URLend.length() != 0) {
+                        URLend.append('&');
+                    }
+                    URLend.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+                    URLend.append('=');
+                    URLend.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+                }
+
+                URL owlHowlGetEndpoint = new URL("http://ec2-34-230-76-33.compute-1.amazonaws.com:8080/message?" + URLend.toString());
+
+                //Set connection
+                myConnection = (HttpURLConnection) owlHowlGetEndpoint.openConnection();
+                myConnection.setReadTimeout(10000);
+                myConnection.setConnectTimeout(10000);
+
+                int responseCode = myConnection.getResponseCode();
+
+                if(responseCode == HttpURLConnection.HTTP_OK){
+                    BufferedReader in = new BufferedReader(new InputStreamReader((InputStream) myConnection.getContent(), "UTF-8"));
                     StringBuffer sb = new StringBuffer("");
                     String line = "";
                     while((line = in.readLine()) != null){
