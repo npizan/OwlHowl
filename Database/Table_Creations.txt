@@ -7,3 +7,46 @@ CREATE TABLE `Owlhowl`.`test` (
   `lng` VARCHAR(45) NULL,
   PRIMARY KEY (`testID`))
 COMMENT = 'Test table for the app to test connection to.';
+
+//Device Table
+CREATE TABLE `device` (
+  `deviceID` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  PRIMARY KEY (`deviceID`,`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+COMMENT='This table is to hold the unique identification for each device.';
+
+//Messages table
+CREATE TABLE `message` (
+  `messageID` int(11) NOT NULL AUTO_INCREMENT,
+  `message` varchar(140) NOT NULL,
+  `lat` double NOT NULL,
+  `lng` double NOT NULL,
+  `deviceID` int(11) NOT NULL COMMENT 'FK To connect back to a posting device.',
+  `handleID` int(11) NOT NULL COMMENT 'Relate a given handle to a message.',
+  PRIMARY KEY (`messageID`),
+  KEY `deviceID_idx` (`deviceID`),
+  KEY `handleID_idx` (`handleID`),
+  CONSTRAINT `deviceID` FOREIGN KEY (`deviceID`) REFERENCES `device` (`deviceID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `handleID` FOREIGN KEY (`handleID`) REFERENCES `handle` (`handleID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='This table is to hold the messages and the location in which they were posted.';
+
+//Handle Table
+CREATE TABLE `handle` (
+  `handleID` int(11) NOT NULL AUTO_INCREMENT,
+  `handle` varchar(45) NOT NULL,
+  `deviceID` int(11) NOT NULL COMMENT 'FK to relate a given handle to a single device.',
+  PRIMARY KEY (`handleID`),
+  KEY `deviceID_idx` (`deviceID`),
+  CONSTRAINT `deviceID2` FOREIGN KEY (`deviceID`) REFERENCES `device` (`deviceID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='This table will be truncated daily.';
+
+//Comments table (if we get that far)
+CREATE TABLE `comment` (
+  `commentID` int(11) NOT NULL AUTO_INCREMENT,
+  `comment` varchar(140) NOT NULL,
+  `messageID` int(11) NOT NULL COMMENT 'FK to relate it to the message it was posted to.',
+  PRIMARY KEY (`commentID`),
+  KEY `messageID_idx` (`messageID`),
+  CONSTRAINT `messageID` FOREIGN KEY (`messageID`) REFERENCES `message` (`messageID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='This table is for a comments to a post';
