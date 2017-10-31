@@ -45,13 +45,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"/>
 
-    <Button
-        android:id="@+id/btSatellite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sat"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/btClear" />
+
 
     <Button
         android:id="@+id/btMark"
@@ -59,7 +53,7 @@
         android:layout_height="wrap_content"
         android:text="Mark"
         android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/btSatellite"/>
+        android:layout_toRightOf="@+id/btClear"/>
 
     <ZoomControls
         android:id="@+id/zcZoom"
