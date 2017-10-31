@@ -26,6 +26,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -42,6 +43,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Array;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -84,8 +86,6 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
     ExpandableListView expandableListView;
 
 
-
-
     // Sets the map up.  This is called first.  When the
     // screen is tilted it will start here by setting up
     // the map again.
@@ -98,6 +98,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
 
         //
         getMessages = (Button) findViewById(R.id.btGetMes);
@@ -225,7 +226,10 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         return latlog;
     }
 
-
+    // Get mMarkers
+    private List<Marker> getMarkers(){
+        return mMarkers;
+    }
 
 
 
@@ -328,13 +332,15 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         // Get current location and focus upon start up
         LatLng myLocation = getLocation();
         // move the camera to that location and zoom in
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 13.0f));
         // Draw the circle that surrounds that location
         circle = drawCircle(myLocation);
+        LatLng tempLocation = new LatLng(39.6, -75.2);
+
+        mMarkers.add(mMap.addMarker(new MarkerOptions().position(tempLocation).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))));
 
 
         // On Map Click Listener.  It handles setting a marker
