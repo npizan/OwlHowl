@@ -169,21 +169,6 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             }
         });
 
-        // Satelite view button.  Toggles back and forth.
-        satView = (Button) findViewById(R.id.btSatellite);
-        satView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mMap.getMapType() == GoogleMap.MAP_TYPE_NORMAL) {
-                    mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-                    satView.setText("NORM");
-                } else {
-                    mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                    satView.setText("SAT");
-                }
-            }
-        });
-
         // calls the locationManager
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         //getLocation(); // not used
@@ -239,8 +224,8 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
     private Circle drawCircle(LatLng latLng){
         CircleOptions options = new CircleOptions()
                 .center(latLng)
-                .radius(3000) // in meters
-                .fillColor(0x50ead61c) // 50 is the amount of transparency ead61c is the color yellow
+                .radius(4023) // in meters = 2.5 miles
+                .fillColor(0x30ead61c) // 30 is the amount of transparency ead61c is the color yellow
                 .strokeColor(Color.BLACK) // this is the outline
                 .strokeWidth(3);
         return mMap.addCircle(options);
