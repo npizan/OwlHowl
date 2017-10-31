@@ -14,12 +14,13 @@
         android:orientation="vertical">
 
         <ImageView
-            android:src="@drawable/owlhowlsplsh"
-            android:layout_gravity="center"
+            android:id="@+id/imageView2"
             android:layout_width="700dp"
             android:layout_height="700dp"
-            tools:layout_editor_absoluteY="656dp"
-            tools:layout_editor_absoluteX="383dp" />
+            android:layout_gravity="center"
+            android:src="@drawable/owlhowlsplsh"
+            tools:layout_editor_absoluteX="383dp"
+            tools:layout_editor_absoluteY="656dp" />
 
     </LinearLayout>
 
