@@ -25,6 +25,17 @@ public class List extends AppCompatActivity {
         ListView howlsListView = (ListView) findViewById(R.id.howlViews);
         howlsListView.setAdapter(howlsAdapter);
 
+        howlsListView.setOnItemClickListener(
+                new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        String message = String.valueOf(parent.getItemAtPosition(position));
+                        Toast.makeText(List.this, message, Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
     }
+
+
 }
 
