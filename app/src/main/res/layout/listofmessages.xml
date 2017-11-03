@@ -9,13 +9,15 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="221dp"
+        android:layout_width="match_parent"
         android:layout_height="70dp"
+        android:background="@android:color/black"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_gravity="left"
         android:text="Owl Howl"
-        android:textSize="50dp" />
+        android:textSize="50dp"
+        android:textColor="#f0f009"/>
 
 
 
