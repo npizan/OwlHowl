@@ -106,9 +106,9 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
 
             @Override
             public void onClick(View v) {
-                new SendGetRequest().execute();
+                //new SendGetRequest().execute();
                 //opens view of messages
-                startActivity(new Intent(MapsActivityOwlHowl.this,Pop.class));
+                startActivity(new Intent(MapsActivityOwlHowl.this, rowan.owlhowl.List.class));
 
             }
         });
@@ -335,7 +335,9 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                         break;
                     }
                     in.close();
+
                     return sb.toString();
+
                 }
                 else{
                     return "HTTP Error : "+responseCode;
@@ -346,6 +348,12 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 myConnection.disconnect();
             }
         }
+
+        private void parseGetMessage(Array array) {
+
+        }
+
+
 
         @Override
         protected void onPostExecute(String result){
@@ -374,9 +382,10 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 13.0f));
         // Draw the circle that surrounds that location
         circle = drawCircle(myLocation);
-        LatLng tempLocation = new LatLng(39.6, -75.2);
 
-        mMarkers.add(mMap.addMarker(new MarkerOptions().position(tempLocation).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))));
+        //ToDo
+        //LatLng tempLocation = new LatLng(39.6, -75.2);
+        //mMarkers.add(mMap.addMarker(new MarkerOptions().position(tempLocation).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))));
 
 
         // On Map Click Listener.  It handles setting a marker
