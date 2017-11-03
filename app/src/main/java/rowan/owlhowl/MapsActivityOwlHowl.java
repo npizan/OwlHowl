@@ -106,7 +106,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
 
             @Override
             public void onClick(View v) {
-                //new SendGetRequest().execute();
+                new SendGetRequest().execute();
                 //opens view of messages
                 startActivity(new Intent(MapsActivityOwlHowl.this, rowan.owlhowl.List.class));
 
