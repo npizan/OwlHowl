@@ -17,12 +17,9 @@
         android:layout_gravity="left"
         android:text="Owl Howl"
         android:textSize="50dp"
-        android:textColor="#f0f009"/>
+        android:textColor="#f0f009">
 
-
-
-
-    textView
+    </TextView>
 
     <ListView
         android:id="@+id/howlViews"
