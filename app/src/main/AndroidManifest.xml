@@ -45,7 +45,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Pop"
+        <activity android:name=".List"
             android:theme="@style/AppTheme.CustomTheme">
 
         </activity>
