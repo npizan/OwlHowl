@@ -135,17 +135,20 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             @Override
             public void onClick(View v) {
                 LatLng myLocation = getLocation();
-                double latti = myLocation.latitude;
-                double longi = myLocation.longitude;
-                String lat = String.valueOf(latti);
-                String lon = String.valueOf(longi);
+                //double latti = myLocation.latitude;
+                //double longi = myLocation.longitude;
+                //String lat = String.valueOf(latti);
+                //String lon = String.valueOf(longi);
+
                 MarkerOptions options = new MarkerOptions()
                         .position(myLocation)
-                        .title("POST an anonymous HOWL")
+                        .title("POST an anonymous HOWL at the top,")
                         .icon(BitmapDescriptorFactory.fromResource(R.mipmap.profhead))
-                        .snippet("or Get HOWLS to retrieve the top rated ones within your location.");
+                        .snippet("or press the Get HOWLS button below.");
+                Marker marker = mMap.addMarker(options);
+                marker.showInfoWindow();
                 // add the maker with the following options
-                mMarkers.add(mMap.addMarker(options));
+                mMarkers.add(marker);
             }
         });
 
@@ -383,11 +386,13 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         circle = drawCircle(myLocation);
         MarkerOptions options = new MarkerOptions()
                 .position(myLocation)
-                .title("POST an anonymous HOWL")
+                .title("POST an anonymous HOWL at the top,")
                 .icon(BitmapDescriptorFactory.fromResource(R.mipmap.profhead))
-                .snippet("or Get HOWLS to retrieve the top rated ones within your location.");
+                .snippet("or press the Get HOWLS button below.");
+        Marker marker = mMap.addMarker(options);
+        marker.showInfoWindow();
         // add the maker with the following options
-        mMarkers.add(mMap.addMarker(options));
+        mMarkers.add(marker);
 
 
         // On Map Click Listener.  It handles setting a marker
