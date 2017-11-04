@@ -201,7 +201,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
     // upon start up of the app.  This is called and
     // returns a LatLng object.  LatLng contains
     // two Double types as params
-    private LatLng getLocation() {
+    public LatLng getLocation() {
         LatLng latlog = new LatLng(0, 0);
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
