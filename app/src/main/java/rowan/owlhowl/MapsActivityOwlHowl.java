@@ -74,7 +74,6 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
     ZoomControls zoom;
     Button markBt;
     Button clear;
-    Button satView;
     Button post;
     Button getMessages;
     static final int REQUEST_LOCATION = 1;
@@ -140,9 +139,13 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 double longi = myLocation.longitude;
                 String lat = String.valueOf(latti);
                 String lon = String.valueOf(longi);
-                // Add the marker on current location when the button is selected.
-                mMarkers.add(mMap.addMarker(new MarkerOptions().position(myLocation).title("My Location = "
-                        + " Latitude -> " + lat + " / Longitude ->  " + lon)));
+                MarkerOptions options = new MarkerOptions()
+                        .position(myLocation)
+                        .title("POST an anonymous HOWL")
+                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.profhead))
+                        .snippet("or Get HOWLS to retrieve the top rated ones within your location.");
+                // add the maker with the following options
+                mMarkers.add(mMap.addMarker(options));
             }
         });
 
@@ -213,10 +216,6 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         return latlog;
     }
 
-    // Get mMarkers
-    private List<Marker> getMarkers(){
-        return mMarkers;
-    }
 
 
 
@@ -382,10 +381,13 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 13.0f));
         // Draw the circle that surrounds that location
         circle = drawCircle(myLocation);
-
-        //ToDo
-        //LatLng tempLocation = new LatLng(39.6, -75.2);
-        //mMarkers.add(mMap.addMarker(new MarkerOptions().position(tempLocation).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))));
+        MarkerOptions options = new MarkerOptions()
+                .position(myLocation)
+                .title("POST an anonymous HOWL")
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.profhead))
+                .snippet("or Get HOWLS to retrieve the top rated ones within your location.");
+        // add the maker with the following options
+        mMarkers.add(mMap.addMarker(options));
 
 
         // On Map Click Listener.  It handles setting a marker
