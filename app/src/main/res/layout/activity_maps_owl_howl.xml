@@ -40,7 +40,7 @@
     <Button
         android:id="@+id/btClear"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
         android:text="Clear"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"/>
@@ -50,7 +50,7 @@
     <Button
         android:id="@+id/btMark"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
         android:text="Mark"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/btClear"/>
@@ -65,7 +65,7 @@
     <Button
         android:id="@+id/btGetMes"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@id/btMark"
         android:text="Get Howls"/>
