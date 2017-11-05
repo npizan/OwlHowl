@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ZoomControls;
 
@@ -143,7 +144,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 MarkerOptions options = new MarkerOptions()
                         .position(myLocation)
                         .title("POST an anonymous HOWL at the top,")
-                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.profhead))
+                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.proftorch))
                         .snippet("or press the Get HOWLS button below.");
                 Marker marker = mMap.addMarker(options);
                 marker.showInfoWindow();
@@ -227,7 +228,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         CircleOptions options = new CircleOptions()
                 .center(latLng)
                 .radius(4023) // in meters = 2.5 miles
-                .fillColor(0x30ead61c) // 30 is the amount of transparency ead61c is the color yellow
+                .fillColor(0x40ead61c) // 30 is the amount of transparency ead61c is the color yellow
                 .strokeColor(Color.BLACK) // this is the outline
                 .strokeWidth(3);
         return mMap.addCircle(options);
@@ -381,15 +382,40 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         // Get current location and focus upon start up
         LatLng myLocation = getLocation();
         // move the camera to that location and zoom in
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 13.0f));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 12.0f));
         // Draw the circle that surrounds that location
         circle = drawCircle(myLocation);
         MarkerOptions options = new MarkerOptions()
                 .position(myLocation)
                 .title("POST an anonymous HOWL at the top,")
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.profhead))
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.proftorch))
                 .snippet("or press the Get HOWLS button below.");
         Marker marker = mMap.addMarker(options);
+
+
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+                View v = getLayoutInflater().inflate(R.layout.info_window, null);
+                TextView tvLocality = (TextView) v.findViewById(R.id.tv_locality);
+                TextView tvSnippet = (TextView) v.findViewById(R.id.tv_Snippet);
+                TextView tvLat = (TextView) v.findViewById(R.id.tv_lat);
+                TextView tvLong = (TextView) v.findViewById(R.id.tv_long);
+
+                LatLng ll = marker.getPosition();
+                tvLocality.setText(marker.getTitle());
+                tvSnippet.setText(marker.getSnippet());
+                tvLat.setText("Latitude: " + ll.latitude);
+                tvLong.setText("Longitude: " + ll.longitude);
+
+                return v;
+            }
+        });
         marker.showInfoWindow();
         // add the maker with the following options
         mMarkers.add(marker);
