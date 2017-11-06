@@ -82,6 +82,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
     LatLng myLocation;
     Circle circle;
     List<Marker> mMarkers = new ArrayList<Marker>();
+    List<LatLng> savedLocations = new ArrayList<LatLng>();
     //Temp
     ExpandableListView expandableListView;
 
@@ -410,6 +411,18 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 12.0f));
         // Draw the circle that surrounds that location
         circle = drawCircle(myLocation);
+
+        //onInfo window click listener.  THis saves the locations.
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                LatLng myLocation = getLocation();
+                savedLocations.add(myLocation);
+
+                Toast.makeText(MapsActivityOwlHowl.this, "Location saved", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         MarkerOptions options = new MarkerOptions()
                 .position(myLocation)
                 .title("'POST' an anonymous HOWL at the top,")
