@@ -13,6 +13,10 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -22,6 +26,9 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.jar.JarInputStream;
+
+import rowan.owlhowl.MapsActivityOwlHowl;
 
 /**
  * Created by ryanm on 11/3/2017.
@@ -35,22 +42,30 @@ public class List extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listofmessages);
 
-        String[] howls = {"Yo what's up?", "This place is awesome.", "Nothing but positive vibes!", "Don't eat the fish."};
-        ListAdapter howlsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, howls);
-        ListView howlsListView = (ListView) findViewById(R.id.howlViews);
-        howlsListView.setAdapter(howlsAdapter);
+        try {
+            String data= getIntent().getStringExtra("howls");
+            JSONArray json = new JSONArray(data);
+            String[] howls = new String[json.length()];
+            for(int i=0; i<json.length();i++){
+                howls[i]= json.getJSONObject(i).getString("message");
+            }
+            //String[] howls = {"Yo what's up?", "This place is awesome.", "Nothing but positive vibes!", "Don't eat the fish."};
+            ListAdapter howlsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, howls);
+            ListView howlsListView = (ListView) findViewById(R.id.howlViews);
+            howlsListView.setAdapter(howlsAdapter);
 
-        howlsListView.setOnItemClickListener(
-                new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        String message = String.valueOf(parent.getItemAtPosition(position));
-                        Toast.makeText(List.this, message, Toast.LENGTH_SHORT).show();
+            howlsListView.setOnItemClickListener(
+                    new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            String message = String.valueOf(parent.getItemAtPosition(position));
+                            Toast.makeText(List.this, message, Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
-        );
-
+            );
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
-
 }
 
