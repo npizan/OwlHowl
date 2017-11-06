@@ -405,17 +405,17 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         // Draw the circle that surrounds that location
         circle = drawCircle(myLocation);
 
-        //onInfo window click listener.  THis saves the locations.
+        // onInfo window click listener.  THis saves the locations.
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
                 LatLng myLocation = getLocation();
                 savedLocations.add(myLocation);
-
                 Toast.makeText(MapsActivityOwlHowl.this, "Location saved", Toast.LENGTH_SHORT).show();
             }
         });
 
+        // Create the marker that shows up on the user's location
         MarkerOptions options = new MarkerOptions()
                 .position(myLocation)
                 .title("'POST' an anonymous HOWL at the top,")
@@ -423,13 +423,14 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 .snippet("or press the 'Get HOWLS' button below.");
                 Marker marker1 = mMap.addMarker(options);
 
-
+        // Create the windowAdapter that creates the customized info windows
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
             @Override
             public View getInfoWindow(Marker marker) {
                 return null;
             }
 
+            // create and fill the Info Window
             @Override
             public View getInfoContents(Marker marker) {
                 View v = getLayoutInflater().inflate(R.layout.info_window, null);
@@ -449,9 +450,9 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 return v;
             }
         });
-        marker1.showInfoWindow();
+        //marker1.showInfoWindow();
         // add the maker with the following options
-        mMarkers.add(marker1);
+        mMarkers.add(marker1); // add the current location marker
 
 
         // On Map Click Listener.  It handles setting a marker
@@ -493,7 +494,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                         return v;
                     }
                 });
-                marker3.showInfoWindow();
+                //marker3.showInfoWindow();
                 // add the maker with the following options
                 mMarkers.add(marker3);
 
