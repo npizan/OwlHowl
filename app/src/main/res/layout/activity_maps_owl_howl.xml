@@ -51,7 +51,7 @@
         android:id="@+id/btMark"
         android:layout_width="wrap_content"
         android:layout_height="65dp"
-        android:text="Get Location"
+        android:text="My Location"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/btClear"/>
 
