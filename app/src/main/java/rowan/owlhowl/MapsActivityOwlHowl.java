@@ -480,7 +480,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                         LatLng ll = marker.getPosition();
                         tvLocality.setText(marker.getTitle());
                         tvSnippet.setText(marker.getSnippet());
-                        tvRadius.setText("");
+                        tvRadius.setText("Press the Google Maps tool bar for directions to this location.");
                         tvLat.setText("Latitude: " + ll.latitude);
                         tvLong.setText("Longitude: " + ll.longitude);
 
