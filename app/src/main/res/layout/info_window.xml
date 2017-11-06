@@ -5,7 +5,7 @@
 
     <ImageView
         android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_height="127dp"
         android:src="@mipmap/profhead2" />
     <LinearLayout
         android:layout_width="wrap_content"
@@ -29,6 +29,15 @@
 
         <TextView
             android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/tv_radius_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="TextView"/>
+
+        <TextView
+
             android:layout_marginLeft="10dp"
             android:id="@+id/tv_lat"
             android:layout_width="wrap_content"

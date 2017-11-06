@@ -141,15 +141,40 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 //String lat = String.valueOf(latti);
                 //String lon = String.valueOf(longi);
 
-                MarkerOptions options = new MarkerOptions()
+                MarkerOptions options2 = new MarkerOptions()
                         .position(myLocation)
                         .title("POST an anonymous HOWL at the top,")
                         .icon(BitmapDescriptorFactory.fromResource(R.mipmap.proftorch))
                         .snippet("or press the Get HOWLS button below.");
-                Marker marker = mMap.addMarker(options);
-                marker.showInfoWindow();
+                Marker marker2 = mMap.addMarker(options2);
+                mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+                    @Override
+                    public View getInfoWindow(Marker marker) {
+                        return null;
+                    }
+
+                    @Override
+                    public View getInfoContents(Marker marker) {
+                        View v = getLayoutInflater().inflate(R.layout.info_window, null);
+                        TextView tvLocality = (TextView) v.findViewById(R.id.tv_locality);
+                        TextView tvSnippet = (TextView) v.findViewById(R.id.tv_Snippet);
+                        TextView tvRaius = (TextView) v.findViewById(R.id.tv_radius_description);
+                        TextView tvLat = (TextView) v.findViewById(R.id.tv_lat);
+                        TextView tvLong = (TextView) v.findViewById(R.id.tv_long);
+
+                        LatLng ll = marker.getPosition();
+                        tvLocality.setText(marker.getTitle());
+                        tvSnippet.setText(marker.getSnippet());
+                        tvRaius.setText("The circle around your location represents a HOWL range of 2.5 miles.");
+                        tvLat.setText("Latitude: " + ll.latitude);
+                        tvLong.setText("Longitude: " + ll.longitude);
+
+                        return v;
+                    }
+                });
+                marker2.showInfoWindow();
                 // add the maker with the following options
-                mMarkers.add(marker);
+                mMarkers.add(marker2);
             }
         });
 
@@ -387,10 +412,10 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         circle = drawCircle(myLocation);
         MarkerOptions options = new MarkerOptions()
                 .position(myLocation)
-                .title("POST an anonymous HOWL at the top,")
+                .title("'POST' an anonymous HOWL at the top,")
                 .icon(BitmapDescriptorFactory.fromResource(R.mipmap.proftorch))
-                .snippet("or press the Get HOWLS button below.");
-        Marker marker = mMap.addMarker(options);
+                .snippet("or press the 'Get HOWLS' button below.");
+                Marker marker1 = mMap.addMarker(options);
 
 
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
@@ -404,21 +429,23 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 View v = getLayoutInflater().inflate(R.layout.info_window, null);
                 TextView tvLocality = (TextView) v.findViewById(R.id.tv_locality);
                 TextView tvSnippet = (TextView) v.findViewById(R.id.tv_Snippet);
+                TextView tvRaius = (TextView) v.findViewById(R.id.tv_radius_description);
                 TextView tvLat = (TextView) v.findViewById(R.id.tv_lat);
                 TextView tvLong = (TextView) v.findViewById(R.id.tv_long);
 
                 LatLng ll = marker.getPosition();
                 tvLocality.setText(marker.getTitle());
                 tvSnippet.setText(marker.getSnippet());
+                tvRaius.setText("The circle around your location represents a HOWL range of 2.5 miles.");
                 tvLat.setText("Latitude: " + ll.latitude);
                 tvLong.setText("Longitude: " + ll.longitude);
 
                 return v;
             }
         });
-        marker.showInfoWindow();
+        marker1.showInfoWindow();
         // add the maker with the following options
-        mMarkers.add(marker);
+        mMarkers.add(marker1);
 
 
         // On Map Click Listener.  It handles setting a marker
@@ -426,8 +453,45 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                mMarkers.add(mMap.addMarker(new MarkerOptions().position(latLng).title("Selected Map Location")));
+                //mMarkers.add(mMap.addMarker(new MarkerOptions().position(latLng).title("Selected Map Location")));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
+                MarkerOptions optionsOnClick = new MarkerOptions()
+                        .position(latLng)
+                        .title("Selected Map Location")
+                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.proftorch))
+                        .snippet("Would you like to add this to your 'Saved Locations'?");
+                Marker marker3 = mMap.addMarker(optionsOnClick);
+                mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+                    @Override
+                    public View getInfoWindow(Marker marker) {
+                        return null;
+                    }
+
+                    @Override
+                    public View getInfoContents(Marker marker) {
+                        View v = getLayoutInflater().inflate(R.layout.info_window, null);
+                        TextView tvLocality = (TextView) v.findViewById(R.id.tv_locality);
+                        TextView tvSnippet = (TextView) v.findViewById(R.id.tv_Snippet);
+                        TextView tvRadius = (TextView) v.findViewById(R.id.tv_radius_description);
+                        TextView tvLat = (TextView) v.findViewById(R.id.tv_lat);
+                        TextView tvLong = (TextView) v.findViewById(R.id.tv_long);
+
+                        LatLng ll = marker.getPosition();
+                        tvLocality.setText(marker.getTitle());
+                        tvSnippet.setText(marker.getSnippet());
+                        tvRadius.setText("");
+                        tvLat.setText("Latitude: " + ll.latitude);
+                        tvLong.setText("Longitude: " + ll.longitude);
+
+                        return v;
+                    }
+                });
+                //marker3.showInfoWindow();
+                // add the maker with the following options
+                mMarkers.add(marker3);
+
+
             }
         });
 
