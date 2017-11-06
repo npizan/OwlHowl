@@ -458,9 +458,9 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
 
                 MarkerOptions optionsOnClick = new MarkerOptions()
                         .position(latLng)
-                        .title("Selected Map Location")
+                        .title("     Selected Map Location")
                         .icon(BitmapDescriptorFactory.fromResource(R.mipmap.proftorch))
-                        .snippet("Would you like to add this to your 'Saved Locations'?");
+                        .snippet("Click this window to add to your Saved Locations?");
                 Marker marker3 = mMap.addMarker(optionsOnClick);
                 mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
                     @Override
@@ -487,13 +487,14 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                         return v;
                     }
                 });
-                //marker3.showInfoWindow();
+                marker3.showInfoWindow();
                 // add the maker with the following options
                 mMarkers.add(marker3);
 
-
             }
         });
+
+
 
         // If the user has granted permission, make the current location button appear
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {

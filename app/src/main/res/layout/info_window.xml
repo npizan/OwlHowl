@@ -5,7 +5,7 @@
 
     <ImageView
         android:layout_width="100dp"
-        android:layout_height="127dp"
+        android:layout_height="153dp"
         android:src="@mipmap/profhead2" />
     <LinearLayout
         android:layout_width="wrap_content"
