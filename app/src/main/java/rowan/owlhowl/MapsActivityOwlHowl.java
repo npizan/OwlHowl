@@ -40,6 +40,7 @@ import org.json.JSONObject;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -300,15 +301,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 int responseCode = myConnection.getResponseCode();
 
                 if(responseCode == HttpURLConnection.HTTP_OK){
-                    BufferedReader in = new BufferedReader(new InputStreamReader(myConnection.getInputStream(), "UTF-8"));
-                    StringBuffer sb = new StringBuffer("");
-                    String line = "";
-                    while((line = in.readLine()) != null){
-                        sb.append(line);
-                        break;
-                    }
-                    in.close();
-                    return sb.toString();
+                    return readInput(myConnection.getInputStream());
                 }
                 else{
                     return "HTTP Error : "+responseCode;
@@ -355,17 +348,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 int responseCode = myConnection.getResponseCode();
 
                 if(responseCode == HttpURLConnection.HTTP_OK){
-                    BufferedReader in = new BufferedReader(new InputStreamReader((InputStream) myConnection.getContent(), "UTF-8"));
-                    StringBuffer sb = new StringBuffer("");
-                    String line = "";
-                    while((line = in.readLine()) != null){
-                        sb.append(line);
-                        break;
-                    }
-                    in.close();
-
-                    return sb.toString();
-
+                    return readInput(myConnection.getInputStream());
                 }
                 else{
                     return "HTTP Error : "+responseCode;
@@ -377,16 +360,21 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             }
         }
 
-        private void parseGetMessage(Array array) {
-
-        }
-
-
-
         @Override
         protected void onPostExecute(String result){
             Toast.makeText(getApplicationContext(),result,Toast.LENGTH_LONG).show();
         }
+    }
+
+    private String readInput(InputStream input) throws IOException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(input));
+        StringBuffer sb = new StringBuffer("");
+        String line = "";
+        while((line = in.readLine()) != null){
+            sb.append(line);
+        }
+        in.close();
+        return sb.toString();
     }
 
 
