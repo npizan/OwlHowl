@@ -10,6 +10,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.provider.ContactsContract;
 import android.provider.Telephony;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -34,6 +35,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -321,8 +323,8 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
     }
 
 
-    public class SendGetRequest extends AsyncTask<String, Void, String>{
-        protected String doInBackground(String... arg0){
+    public class SendGetRequest extends AsyncTask<String, Void, JSONArray>{
+        protected JSONArray doInBackground(String... arg0){
             HttpURLConnection myConnection = null;
             try{
                 //build URL/Get data
@@ -349,21 +351,24 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 int responseCode = myConnection.getResponseCode();
 
                 if(responseCode == HttpURLConnection.HTTP_OK){
-                    return readInput(myConnection.getInputStream());
+                    String input = readInput(myConnection.getInputStream());
+                    //input = input.substring(1,input.length()-1);
+                    JSONArray json = new JSONArray(input);
+                    return json;
                 }
                 else{
-                    return "HTTP Error : "+responseCode;
+                    return new JSONArray("[{\"error\":\""+responseCode+"\"}]");
                 }
             }catch(Exception e){
-                return "Caught exception: "+e.getMessage();
+                return null;
             }finally{
                 myConnection.disconnect();
             }
         }
 
         @Override
-        protected void onPostExecute(String result){
-            Toast.makeText(getApplicationContext(),result,Toast.LENGTH_LONG).show();
+        protected void onPostExecute(JSONArray result){
+            Toast.makeText(getApplicationContext(),result.toString(),Toast.LENGTH_LONG).show();
         }
     }
 
