@@ -10,6 +10,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.provider.Telephony;
 import android.support.annotation.NonNull;
@@ -88,6 +89,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
     List<LatLng> savedLocations = new ArrayList<LatLng>();
     //Temp
     ExpandableListView expandableListView;
+    JSONArray howls = new JSONArray();
 
 
     // Sets the map up.  This is called first.  When the
@@ -110,9 +112,12 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
 
             @Override
             public void onClick(View v) {
+                //update howls
                 new SendGetRequest().execute();
                 //opens view of messages
-                startActivity(new Intent(MapsActivityOwlHowl.this, rowan.owlhowl.List.class));
+                Intent myIntent = new Intent(MapsActivityOwlHowl.this, rowan.owlhowl.List.class);
+                myIntent.putExtra("howls", howls.toString());
+                startActivity(myIntent);
 
             }
         });
@@ -354,6 +359,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                     String input = readInput(myConnection.getInputStream());
                     //input = input.substring(1,input.length()-1);
                     JSONArray json = new JSONArray(input);
+                    howls = json;
                     return json;
                 }
                 else{
@@ -364,11 +370,6 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             }finally{
                 myConnection.disconnect();
             }
-        }
-
-        @Override
-        protected void onPostExecute(JSONArray result){
-            Toast.makeText(getApplicationContext(),result.toString(),Toast.LENGTH_LONG).show();
         }
     }
 
@@ -381,6 +382,10 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         }
         in.close();
         return sb.toString();
+    }
+
+    public JSONArray getHowls(){
+        return howls;
     }
 
 
