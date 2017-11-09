@@ -223,12 +223,19 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             @Override
             public void onClick(View v) {
                 LatLng temp = new LatLng(39.90, -75.16);
+                LatLng temp2 = new LatLng(39.3993755, -75.0473308);
                 MarkerOptions options4 = new MarkerOptions()
                         .position(temp)
                         .title("Saved Location")
                         .icon(BitmapDescriptorFactory.fromResource(R.mipmap.heart))
                         .snippet("");
+                MarkerOptions options5 = new MarkerOptions()
+                        .position(temp2)
+                        .title("Saved Location")
+                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.heart))
+                        .snippet("");
                 Marker savLocMark = mMap.addMarker(options4);
+                Marker savLocMark2 = mMap.addMarker(options5);
                 mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
                     @Override
                     public View getInfoWindow(Marker marker) {
@@ -256,6 +263,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 });
                 // add the maker with the following options
                 mMarkers.add(savLocMark);
+                mMarkers.add(savLocMark2);
 
             }
 
