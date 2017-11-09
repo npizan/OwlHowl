@@ -153,7 +153,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 MarkerOptions options2 = new MarkerOptions()
                         .position(myLocation)
                         .title("POST an anonymous HOWL at the top,")
-                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.proftorch))
+                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.profhead))
                         .snippet("or press the Get HOWLS button below.");
                 Marker marker2 = mMap.addMarker(options2);
                 mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
@@ -174,7 +174,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                         LatLng ll = marker.getPosition();
                         tvLocality.setText(marker.getTitle());
                         tvSnippet.setText(marker.getSnippet());
-                        tvRaius.setText("The circle around your location represents a HOWL range of 2.5 miles.");
+                        tvRaius.setText("HOWL range = 2.5 miles");
                         tvLat.setText("Latitude: " + ll.latitude);
                         tvLong.setText("Longitude: " + ll.longitude);
 
@@ -184,6 +184,8 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 marker2.showInfoWindow();
                 // add the maker with the following options
                 mMarkers.add(marker2);
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 12.0f));
             }
         });
 
@@ -424,7 +426,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         MarkerOptions options = new MarkerOptions()
                 .position(myLocation)
                 .title("'POST' an anonymous HOWL at the top,")
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.proftorch))
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.profhead))
                 .snippet("or press the 'Get HOWLS' button below.");
                 Marker marker1 = mMap.addMarker(options);
 

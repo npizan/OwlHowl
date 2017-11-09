@@ -6,7 +6,7 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="100dp"
-        android:layout_height="125dp"
+        android:layout_height="137dp"
         android:src="@mipmap/profhead2" />
 
     <LinearLayout
