@@ -81,6 +81,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
     Button clear;
     Button post;
     Button getMessages;
+    Button savedLoc;
     static final int REQUEST_LOCATION = 1;
     LocationManager locationManager;
     LatLng myLocation;
@@ -215,6 +216,49 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         // calls the locationManager
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         //getLocation(); // not used
+
+        savedLoc = (Button) findViewById(R.id.savedLoc);
+        savedLoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LatLng temp = new LatLng(39.90, -75.16);
+                MarkerOptions options4 = new MarkerOptions()
+                        .position(temp)
+                        .title("Saved Location")
+                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.proftorch))
+                        .snippet("");
+                Marker savLocMark = mMap.addMarker(options4);
+                mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+                    @Override
+                    public View getInfoWindow(Marker marker) {
+                        return null;
+                    }
+
+                    @Override
+                    public View getInfoContents(Marker marker) {
+                        View v = getLayoutInflater().inflate(R.layout.info_window, null);
+                        TextView tvLocality = (TextView) v.findViewById(R.id.tv_locality);
+                        TextView tvSnippet = (TextView) v.findViewById(R.id.tv_Snippet);
+                        TextView tvRaius = (TextView) v.findViewById(R.id.tv_radius_description);
+                        TextView tvLat = (TextView) v.findViewById(R.id.tv_lat);
+                        TextView tvLong = (TextView) v.findViewById(R.id.tv_long);
+
+                        LatLng ll = marker.getPosition();
+                        tvLocality.setText(marker.getTitle());
+                        tvSnippet.setText(marker.getSnippet());
+                        tvRaius.setText("");
+                        tvLat.setText("Latitude: " + ll.latitude);
+                        tvLong.setText("Longitude: " + ll.longitude);
+
+                        return v;
+                    }
+                });
+                // add the maker with the following options
+                mMarkers.add(savLocMark);
+
+            }
+
+        });
     }
     // ******************   End onCreate() Area *********************
 
