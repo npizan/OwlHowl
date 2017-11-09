@@ -217,6 +217,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         //getLocation(); // not used
 
+        // Saved Location button on clickListener
         savedLoc = (Button) findViewById(R.id.savedLoc);
         savedLoc.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -225,7 +226,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 MarkerOptions options4 = new MarkerOptions()
                         .position(temp)
                         .title("Saved Location")
-                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.proftorch))
+                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.heart))
                         .snippet("");
                 Marker savLocMark = mMap.addMarker(options4);
                 mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
