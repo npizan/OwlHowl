@@ -14,7 +14,7 @@ public class SplashScreen extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    sleep(1500);// show the splash screen for 2 seconds
+                    sleep(500);// show the splash screen for 2 seconds
                     Intent intent = new Intent(getApplicationContext(), MapsActivityOwlHowl.class);
                     startActivity(intent);
                     finish();

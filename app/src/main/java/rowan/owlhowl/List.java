@@ -31,19 +31,36 @@ import java.util.jar.JarInputStream;
 import rowan.owlhowl.MapsActivityOwlHowl;
 
 /**
- * Created by ryanm on 11/3/2017.
+ * Created by Ryan, Brandon, Will, Leif, Cullen on 11/3/2017.
  */
 
 public class List extends AppCompatActivity {
     Button updateHowls;
+    String data = "";
+    Button temp;
+    MapsActivityOwlHowl ma = new MapsActivityOwlHowl();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listofmessages);
+        data = getIntent().getStringExtra("howls");
+        displayMes(data);
 
-        try {
-            String data= getIntent().getStringExtra("howls");
+        updateHowls = (Button) findViewById(R.id.btupdateMessages);
+        updateHowls.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                data = getIntent().getStringExtra("howls");
+                displayMes(data);
+                Toast.makeText(List.this, "Updated HOWLS", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void displayMes(String data){
+        try{
             JSONArray json = new JSONArray(data);
             String[] howls = new String[json.length()];
             for(int i=0; i<json.length();i++){
@@ -54,18 +71,11 @@ public class List extends AppCompatActivity {
             ListView howlsListView = (ListView) findViewById(R.id.howlViews);
             howlsListView.setAdapter(howlsAdapter);
 
-            howlsListView.setOnItemClickListener(
-                    new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            String message = String.valueOf(parent.getItemAtPosition(position));
-                            Toast.makeText(List.this, message, Toast.LENGTH_SHORT).show();
-                        }
-                    }
-            );
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
 }
 

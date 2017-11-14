@@ -2,6 +2,7 @@ package rowan.owlhowl;
 
 import android.*;
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -19,6 +20,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -100,6 +102,8 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps_owl_howl);
+        new rowan.owlhowl.List();
+        final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -116,10 +120,10 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 //update howls
                 new SendGetRequest().execute();
                 //opens view of messages
-                Intent myIntent = new Intent(MapsActivityOwlHowl.this, rowan.owlhowl.List.class);
+                Intent myIntent = new Intent(getApplicationContext(), rowan.owlhowl.List.class);
+                //b.putString("howls",howls.toString());
                 myIntent.putExtra("howls", howls.toString());
                 startActivity(myIntent);
-
             }
         });
 
@@ -140,7 +144,6 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         });
 
         // Mark button onClickListener
-
         markBt = (Button) findViewById(R.id.btMark);
         markBt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,6 +203,8 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 String pos = postText.getText().toString();
                 new SendPostRequest().execute(pos);
                 postText.setText("");
+
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
             }
         });
 
@@ -271,180 +276,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
     }
     // ******************   End onCreate() Area *********************
 
-
-    // Remove the markers from the arrayList
-    // This method needed to be created so I could
-    // keep the yellow location circle on the map
-    // when the map.clear() was being called.
-    // I added the markers to an arrayList and
-    // wipe the list out when the clear button
-    // is selected.
-    private void removeMarkers() {
-        for(Marker marker: mMarkers){
-            marker.remove();
-        }
-        mMarkers.clear();
-    }
-
-    // This is a custom getLocation method.  I had
-    // to create it so I could find current location
-    // upon start up of the app.  This is called and
-    // returns a LatLng object.  LatLng contains
-    // two Double types as params
-    public LatLng getLocation() {
-        LatLng latlog = new LatLng(0, 0);
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-        } else {
-            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            if (location != null) {
-                double latti = location.getLatitude();
-                double longi = location.getLongitude();
-                LatLng ll = new LatLng(latti, longi);
-                latlog = ll;
-            }
-        }
-        return latlog;
-    }
-
-
-
-
-    // Draw a circle on the map
-    private Circle drawCircle(LatLng latLng){
-        CircleOptions options = new CircleOptions()
-                .center(latLng)
-                .radius(4023) // in meters = 2.5 miles
-                .fillColor(0x40ead61c) // 30 is the amount of transparency ead61c is the color yellow
-                .strokeColor(Color.BLACK) // this is the outline
-                .strokeWidth(3);
-        return mMap.addCircle(options);
-    }
-
-    /**
-     * Asynchronous POST request.
-     * All network operations have to be done off the main thread.
-     * This allows UI to function normally while this is done in background
-     */
-    public class SendPostRequest extends AsyncTask<String, Void, String>{
-        protected String doInBackground(String... arg0){
-            HttpURLConnection myConnection = null;
-            try{
-                URL owlHowlPostEndpoint = new URL("http://ec2-34-230-76-33.compute-1.amazonaws.com:8080/message");
-                //build request data
-                Map<String, Object> params = new LinkedHashMap<>();
-                params.put("message", arg0[0]);
-                params.put("lat", getLocation().latitude);
-                params.put("lng", getLocation().longitude);
-                StringBuilder postData = new StringBuilder();
-                for (Map.Entry<String, Object> param : params.entrySet()) {
-                    if (postData.length() != 0) {
-                        postData.append('&');
-                    }
-                    postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
-                    postData.append('=');
-                    postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
-                }
-                byte[] postDataBytes =postData.toString().getBytes("UTF-8");
-
-                //Set connection
-                myConnection = (HttpURLConnection) owlHowlPostEndpoint.openConnection();
-                myConnection.setReadTimeout(10000);
-                myConnection.setConnectTimeout(10000);
-                myConnection.setRequestMethod("POST");
-                myConnection.setDoOutput(true);
-                myConnection.setDoInput(true);
-                myConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                myConnection.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
-                //Write the data
-                myConnection.getOutputStream().write(postDataBytes);
-
-                int responseCode = myConnection.getResponseCode();
-
-                if(responseCode == HttpURLConnection.HTTP_OK){
-                    return readInput(myConnection.getInputStream());
-                }
-                else{
-                    return "HTTP Error : "+responseCode;
-                }
-            }catch(Exception e){
-                return "Caught exception: "+e.getMessage();
-            }finally{
-                myConnection.disconnect();
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String result){
-            Toast.makeText(getApplicationContext(),result,Toast.LENGTH_LONG).show();
-        }
-    }
-
-
-    public class SendGetRequest extends AsyncTask<String, Void, JSONArray>{
-        protected JSONArray doInBackground(String... arg0){
-            HttpURLConnection myConnection = null;
-            try{
-                //build URL/Get data
-                Map<String, Object> params = new LinkedHashMap<>();
-                params.put("lat", getLocation().latitude);
-                params.put("lng", getLocation().longitude);
-                StringBuilder URLend = new StringBuilder();
-                for (Map.Entry<String, Object> param : params.entrySet()) {
-                    if (URLend.length() != 0) {
-                        URLend.append('&');
-                    }
-                    URLend.append(URLEncoder.encode(param.getKey(), "UTF-8"));
-                    URLend.append('=');
-                    URLend.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
-                }
-
-                URL owlHowlGetEndpoint = new URL("http://ec2-34-230-76-33.compute-1.amazonaws.com:8080/message?" + URLend.toString());
-
-                //Set connection
-                myConnection = (HttpURLConnection) owlHowlGetEndpoint.openConnection();
-                myConnection.setReadTimeout(10000);
-                myConnection.setConnectTimeout(10000);
-
-                int responseCode = myConnection.getResponseCode();
-
-                if(responseCode == HttpURLConnection.HTTP_OK){
-                    String input = readInput(myConnection.getInputStream());
-                    //input = input.substring(1,input.length()-1);
-                    JSONArray json = new JSONArray(input);
-                    howls = json;
-                    return json;
-                }
-                else{
-                    return new JSONArray("[{\"error\":\""+responseCode+"\"}]");
-                }
-            }catch(Exception e){
-                return null;
-            }finally{
-                myConnection.disconnect();
-            }
-        }
-    }
-
-    private String readInput(InputStream input) throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(input));
-        StringBuffer sb = new StringBuffer("");
-        String line = "";
-        while((line = in.readLine()) != null){
-            sb.append(line);
-        }
-        in.close();
-        return sb.toString();
-    }
-
-    public JSONArray getHowls(){
-        return howls;
-    }
-
-
-    //*********** End of misc methods area ***********************************
+    //*********** Beggining of On Map Ready Area ***********************************
 
     /**
      * Manipulates the map once available.
@@ -464,6 +296,8 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 12.0f));
         // Draw the circle that surrounds that location
         circle = drawCircle(myLocation);
+        // initiate the send get request so it can be ready when called
+        new SendGetRequest().execute();
 
         // onInfo window click listener.  THis saves the locations.
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
@@ -561,8 +395,6 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             }
         });
 
-
-
         // If the user has granted permission, make the current location button appear
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
@@ -592,5 +424,182 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 break;
         }
     }
+
+
+    // Remove the markers from the arrayList
+    // This method needed to be created so I could
+    // keep the yellow location circle on the map
+    // when the map.clear() was being called.
+    // I added the markers to an arrayList and
+    // wipe the list out when the clear button
+    // is selected.
+    private void removeMarkers() {
+        for(Marker marker: mMarkers){
+            marker.remove();
+        }
+        mMarkers.clear();
+    }
+
+    // This is a custom getLocation method.  I had
+    // to create it so I could find current location
+    // upon start up of the app.  This is called and
+    // returns a LatLng object.  LatLng contains
+    // two Double types as params
+    public LatLng getLocation() {
+        LatLng latlog = new LatLng(0, 0);
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+        } else {
+            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if (location != null) {
+                double latti = location.getLatitude();
+                double longi = location.getLongitude();
+                LatLng ll = new LatLng(latti, longi);
+                latlog = ll;
+            }
+        }
+        return latlog;
+    }
+    //*********** End of On Map Ready area ***********************************
+
+    //*********** Beggining of misc methods area ***********************************
+
+
+    // Draw a circle on the map
+    private Circle drawCircle(LatLng latLng){
+        CircleOptions options = new CircleOptions()
+                .center(latLng)
+                .radius(4023) // in meters = 2.5 miles
+                .fillColor(0x40ead61c) // 30 is the amount of transparency ead61c is the color yellow
+                .strokeColor(Color.BLACK) // this is the outline
+                .strokeWidth(3);
+        return mMap.addCircle(options);
+    }
+
+    /**
+     * Asynchronous POST request.
+     * All network operations have to be done off the main thread.
+     * This allows UI to function normally while this is done in background
+     */
+    public class SendPostRequest extends AsyncTask<String, Void, String>{
+        protected String doInBackground(String... arg0){
+            HttpURLConnection myConnection = null;
+            try{
+                URL owlHowlPostEndpoint = new URL("http://ec2-34-230-76-33.compute-1.amazonaws.com:8080/message");
+                //build request data
+                Map<String, Object> params = new LinkedHashMap<>();
+                params.put("message", arg0[0]);
+                params.put("lat", getLocation().latitude);
+                params.put("lng", getLocation().longitude);
+                StringBuilder postData = new StringBuilder();
+                for (Map.Entry<String, Object> param : params.entrySet()) {
+                    if (postData.length() != 0) {
+                        postData.append('&');
+                    }
+                    postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+                    postData.append('=');
+                    postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+                }
+                byte[] postDataBytes =postData.toString().getBytes("UTF-8");
+
+                //Set connection
+                myConnection = (HttpURLConnection) owlHowlPostEndpoint.openConnection();
+                myConnection.setReadTimeout(10000);
+                myConnection.setConnectTimeout(10000);
+                myConnection.setRequestMethod("POST");
+                myConnection.setDoOutput(true);
+                myConnection.setDoInput(true);
+                myConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                myConnection.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
+                //Write the data
+                myConnection.getOutputStream().write(postDataBytes);
+
+                int responseCode = myConnection.getResponseCode();
+
+                if(responseCode == HttpURLConnection.HTTP_OK){
+                    return readInput(myConnection.getInputStream());
+                }
+                else{
+                    return "HTTP Error : "+responseCode;
+                }
+            }catch(Exception e){
+                return "Caught exception: "+e.getMessage();
+            }finally{
+                myConnection.disconnect();
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result){
+
+            Toast.makeText(getApplicationContext(),result,Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+    public class SendGetRequest extends AsyncTask<String, Void, JSONArray>{
+        protected JSONArray doInBackground(String... arg0){
+            HttpURLConnection myConnection = null;
+            try{
+                //build URL/Get data
+                Map<String, Object> params = new LinkedHashMap<>();
+                params.put("lat", getLocation().latitude);
+                params.put("lng", getLocation().longitude);
+                StringBuilder URLend = new StringBuilder();
+                for (Map.Entry<String, Object> param : params.entrySet()) {
+                    if (URLend.length() != 0) {
+                        URLend.append('&');
+                    }
+                    URLend.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+                    URLend.append('=');
+                    URLend.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+                }
+
+                URL owlHowlGetEndpoint = new URL("http://ec2-34-230-76-33.compute-1.amazonaws.com:8080/message?" + URLend.toString());
+
+                //Set connection
+                myConnection = (HttpURLConnection) owlHowlGetEndpoint.openConnection();
+                myConnection.setReadTimeout(10000);
+                myConnection.setConnectTimeout(10000);
+
+                int responseCode = myConnection.getResponseCode();
+
+                if(responseCode == HttpURLConnection.HTTP_OK){
+                    String input = readInput(myConnection.getInputStream());
+                    //input = input.substring(1,input.length()-1);
+                    JSONArray json = new JSONArray(input);
+                    howls = json;
+                    return json;
+                }
+                else{
+                    return new JSONArray("[{\"error\":\""+responseCode+"\"}]");
+                }
+            }catch(Exception e){
+                return null;
+            }finally{
+                myConnection.disconnect();
+            }
+        }
+    }
+
+    public String readInput(InputStream input) throws IOException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(input));
+        StringBuffer sb = new StringBuffer("");
+        String line = "";
+        while((line = in.readLine()) != null){
+            sb.append(line);
+        }
+        in.close();
+        return sb.toString();
+    }
+
+    public JSONArray getHowls(){
+        return howls;
+    }
+
+
+    //*********** End of misc methods area ***********************************
 
 }
