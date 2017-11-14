@@ -406,7 +406,10 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         }
     }
 
+    //*********** End of On Map Ready area ***********************************
 
+    //*********** Beggining of misc methods area ***********************************
+    
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -462,9 +465,6 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         }
         return latlog;
     }
-    //*********** End of On Map Ready area ***********************************
-
-    //*********** Beggining of misc methods area ***********************************
 
 
     // Draw a circle on the map
