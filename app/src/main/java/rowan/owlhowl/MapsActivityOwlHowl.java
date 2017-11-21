@@ -227,7 +227,11 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         savedLoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LatLng temp = new LatLng(39.90, -75.16);
+                removeMarkers();
+                LatLng latLng = getLocation();
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 8.0f));
+                getSavedLocations();
+                /*LatLng temp = new LatLng(39.90, -75.16);
                 LatLng temp2 = new LatLng(39.3993755, -75.0473308);
                 MarkerOptions options4 = new MarkerOptions()
                         .position(temp)
@@ -268,7 +272,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 });
                 // add the maker with the following options
                 mMarkers.add(savLocMark);
-                mMarkers.add(savLocMark2);
+                mMarkers.add(savLocMark2);**/
 
             }
 
@@ -303,8 +307,8 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                LatLng myLocation = getLocation();
-                savedLocations.add(myLocation);
+                LatLng markerPosition = marker.getPosition();
+                savedLocations.add(markerPosition);
                 Toast.makeText(MapsActivityOwlHowl.this, "Location saved", Toast.LENGTH_SHORT).show();
             }
         });
@@ -409,7 +413,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
     //*********** End of On Map Ready area ***********************************
 
     //*********** Beggining of misc methods area ***********************************
-    
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -597,6 +601,56 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
 
     public JSONArray getHowls(){
         return howls;
+    }
+
+
+    /**
+     * saved locations
+     */
+    public void getSavedLocations(){
+        if(savedLocations.isEmpty()) {
+            Toast.makeText(MapsActivityOwlHowl.this,"There are no Saved Locations. Please pick some to add.",Toast.LENGTH_LONG).show();
+        }
+        if(savedLocations != null){
+            for(LatLng s: savedLocations){
+                MarkerOptions options5 = new MarkerOptions()
+                        .position(s)
+                        .title("Saved Location")
+                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.heart))
+                        .snippet("");
+                Marker savLocMark = mMap.addMarker(options5);
+                mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+                    @Override
+                    public View getInfoWindow(Marker marker) {
+                        return null;
+                    }
+
+                    @Override
+                    public View getInfoContents(Marker marker) {
+                        View v = getLayoutInflater().inflate(R.layout.info_window, null);
+                        TextView tvLocality = (TextView) v.findViewById(R.id.tv_locality);
+                        TextView tvSnippet = (TextView) v.findViewById(R.id.tv_Snippet);
+                        TextView tvRaius = (TextView) v.findViewById(R.id.tv_radius_description);
+                        TextView tvLat = (TextView) v.findViewById(R.id.tv_lat);
+                        TextView tvLong = (TextView) v.findViewById(R.id.tv_long);
+
+                        LatLng ll = marker.getPosition();
+                        tvLocality.setText(marker.getTitle());
+                        tvSnippet.setText(marker.getSnippet());
+                        tvRaius.setText("");
+                        tvLat.setText("Latitude: " + ll.latitude);
+                        tvLong.setText("Longitude: " + ll.longitude);
+
+                        return v;
+                    }
+                });
+                // add the maker with the following options
+                mMarkers.add(savLocMark);
+
+            }
+        }
+
+
     }
 
 
