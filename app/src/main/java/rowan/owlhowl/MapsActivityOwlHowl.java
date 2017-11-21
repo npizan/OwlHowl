@@ -223,7 +223,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         //getLocation(); // not used
 
         // Saved Location button on clickListener
-        savedLoc = (Button) findViewById(R.id.savedLoc);
+        savedLoc = (Button) findViewById(R.id.getLocation);
         savedLoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
