@@ -4,6 +4,10 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+/**
+ * This is the splash screen that runs before the app starts up.
+ * It shows the selected picture for 500 milliseconds.
+ */
 public class SplashScreen extends AppCompatActivity {
 
     @Override

@@ -68,7 +68,9 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Main class. Sets up and interacts with the map.
+ * Main class. When the splash screen is finished
+ * the onCreate of this class gets initiated.
+ * Sets up and interacts with the map.
  *
  * @author Ryan Godfrey, Adam, Leif, Will, Brandon, Cullen
  * @version 1.awesome
@@ -83,7 +85,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
     Button clear;
     Button post;
     Button getMessages;
-    Button savedLoc;
+    Button getLoc;
     static final int REQUEST_LOCATION = 1;
     LocationManager locationManager;
     LatLng myLocation;
@@ -95,7 +97,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
     JSONArray howls = new JSONArray();
 
 
-    // Sets the map up.  This is called first.  When the
+    // This is the constructor. Sets the map up.  This is called first.  When the
     // screen is tilted it will start here by setting up
     // the map again.
     @Override
@@ -111,18 +113,20 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         mapFragment.getMapAsync(this);
 
 
-        //
+        // "Get Howls" button.  Sets the on click listener.
         getMessages = (Button) findViewById(R.id.btGetMes);
         getMessages.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                //update howls
+                //update howls.  Initiates the Get Request to the database
                 new SendGetRequest().execute();
                 //opens view of messages
                 Intent myIntent = new Intent(getApplicationContext(), rowan.owlhowl.List.class);
                 //b.putString("howls",howls.toString());
                 myIntent.putExtra("howls", howls.toString());
+                // This allows the exchange of returned data from the database
+                // to be handed over tho class List.
                 startActivity(myIntent);
             }
         });
@@ -143,17 +147,14 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             }
         });
 
-        // Mark button onClickListener
+        // Mark button places a marker on the map from a
+        // finger click.
         markBt = (Button) findViewById(R.id.btMark);
         markBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LatLng myLocation = getLocation();
-                //double latti = myLocation.latitude;
-                //double longi = myLocation.longitude;
-                //String lat = String.valueOf(latti);
-                //String lon = String.valueOf(longi);
-
+                // create a custom marker
                 MarkerOptions options2 = new MarkerOptions()
                         .position(myLocation)
                         .title("POST an anonymous HOWL at the top,")
@@ -193,7 +194,8 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             }
         });
 
-        // Post button onClickListener
+        // Post button gets the text form the main textView and
+        // sends it to the database.
         post = (Button) findViewById(R.id.btPost);
         post.setOnClickListener(new View.OnClickListener() {
 
@@ -208,7 +210,11 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             }
         });
 
-        // Clear button onClickListener
+        // Clear button calls the method removeMarkers()
+        // We had to add the markers to an arrayList so that
+        // the circle would stay on the screen when we cleared the
+        // map. The method removeMarkers() clears the ArrayList so the
+        // markers disappear.
         clear = (Button) findViewById(R.id.btClear);
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -222,57 +228,16 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         //getLocation(); // not used
 
-        // Saved Location button on clickListener
-        savedLoc = (Button) findViewById(R.id.getLocation);
-        savedLoc.setOnClickListener(new View.OnClickListener() {
+        //
+        getLoc = (Button) findViewById(R.id.getLocation);
+        getLoc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 removeMarkers();
                 LatLng latLng = getLocation();
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 8.0f));
                 getSavedLocations();
-                /*LatLng temp = new LatLng(39.90, -75.16);
-                LatLng temp2 = new LatLng(39.3993755, -75.0473308);
-                MarkerOptions options4 = new MarkerOptions()
-                        .position(temp)
-                        .title("Saved Location")
-                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.heart))
-                        .snippet("");
-                MarkerOptions options5 = new MarkerOptions()
-                        .position(temp2)
-                        .title("Saved Location")
-                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.heart))
-                        .snippet("");
-                Marker savLocMark = mMap.addMarker(options4);
-                Marker savLocMark2 = mMap.addMarker(options5);
-                mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-                    @Override
-                    public View getInfoWindow(Marker marker) {
-                        return null;
-                    }
 
-                    @Override
-                    public View getInfoContents(Marker marker) {
-                        View v = getLayoutInflater().inflate(R.layout.info_window, null);
-                        TextView tvLocality = (TextView) v.findViewById(R.id.tv_locality);
-                        TextView tvSnippet = (TextView) v.findViewById(R.id.tv_Snippet);
-                        TextView tvRaius = (TextView) v.findViewById(R.id.tv_radius_description);
-                        TextView tvLat = (TextView) v.findViewById(R.id.tv_lat);
-                        TextView tvLong = (TextView) v.findViewById(R.id.tv_long);
-
-                        LatLng ll = marker.getPosition();
-                        tvLocality.setText(marker.getTitle());
-                        tvSnippet.setText(marker.getSnippet());
-                        tvRaius.setText("");
-                        tvLat.setText("Latitude: " + ll.latitude);
-                        tvLong.setText("Longitude: " + ll.longitude);
-
-                        return v;
-                    }
-                });
-                // add the maker with the following options
-                mMarkers.add(savLocMark);
-                mMarkers.add(savLocMark2);**/
 
             }
 
@@ -414,6 +379,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
 
     //*********** Beggining of misc methods area ***********************************
 
+    // This checks to see if the user has given the proper location permissions
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -543,6 +509,9 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
     }
 
 
+    /**
+     * Gets the data from the database upon request.
+     */
     public class SendGetRequest extends AsyncTask<String, Void, JSONArray>{
         protected JSONArray doInBackground(String... arg0){
             HttpURLConnection myConnection = null;
@@ -605,7 +574,8 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
 
 
     /**
-     * saved locations
+     * Gets the saved LatLng objects in the savedLocations Arraylist and
+     * creates a custom marker.  It then displays them on the map.  
      */
     public void getSavedLocations(){
         if(savedLocations.isEmpty()) {

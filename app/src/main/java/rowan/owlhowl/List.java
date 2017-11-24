@@ -32,6 +32,8 @@ import rowan.owlhowl.MapsActivityOwlHowl;
 
 /**
  * Created by Ryan, Brandon, Will, Leif, Cullen on 11/3/2017.
+ * Class List creates the ListView that the main messages
+ * are displayed on.
  */
 
 public class List extends AppCompatActivity {
@@ -40,6 +42,14 @@ public class List extends AppCompatActivity {
     Button temp;
     MapsActivityOwlHowl ma = new MapsActivityOwlHowl();
 
+
+    /**
+     * OnCreate is the constructor of this activity.  When the
+     * "GetHowls" button is pressed on the main activity, it sends
+     * a get request to the database and starts an Instance of
+     * Class List.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +57,7 @@ public class List extends AppCompatActivity {
         data = getIntent().getStringExtra("howls");
         displayMes(data);
 
+        // The update howls button on click listener
         updateHowls = (Button) findViewById(R.id.btupdateMessages);
         updateHowls.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +70,12 @@ public class List extends AppCompatActivity {
         });
     }
 
+    /**
+     * displayMes() is responsible for grabbing the data
+     * from the getRequest in class MapsActivity and display that
+     * data to the ListView
+     * @param data
+     */
     public void displayMes(String data){
         try{
             JSONArray json = new JSONArray(data);
