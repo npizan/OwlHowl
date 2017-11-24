@@ -575,7 +575,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
 
     /**
      * Gets the saved LatLng objects in the savedLocations Arraylist and
-     * creates a custom marker.  It then displays them on the map.  
+     * creates a custom marker.  It then displays them on the map.
      */
     public void getSavedLocations(){
         if(savedLocations.isEmpty()) {
