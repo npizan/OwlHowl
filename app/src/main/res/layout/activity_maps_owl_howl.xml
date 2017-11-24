@@ -40,26 +40,20 @@
     <Button
         android:id="@+id/btClear"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
         android:text="Clear"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"/>
 
-    <Button
-        android:id="@+id/btSatellite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sat"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/btClear" />
+
 
     <Button
         android:id="@+id/btMark"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mark"
+        android:layout_height="65dp"
+        android:text="My Location"
         android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/btSatellite"/>
+        android:layout_toRightOf="@+id/btClear"/>
 
     <ZoomControls
         android:id="@+id/zcZoom"
@@ -71,9 +65,27 @@
     <Button
         android:id="@+id/btGetMes"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@id/btMark"
         android:text="Get Howls"/>
+
+    <Button
+        android:id="@+id/getLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get Locations"
+        android:layout_below="@+id/lll"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/saveLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save Location"
+        android:layout_below="@+id/getLocation"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

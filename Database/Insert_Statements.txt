@@ -3,3 +3,28 @@
 INSERT INTO Owlhowl.test(message, lat, lng)
 	VALUES
     (x, y, z);
+
+//Insert a device
+//x should be the Hashed value for the name
+INSERT INTO Owlhowl.device(devicename)
+VALUES
+('x');
+
+//Insert a handle
+//h is to be the handle to insert
+//x is the name of the device to link the handle to
+INSERT INTO Owlhowl.handle(handle, deviceID)
+SELECT 'h', deviceID
+FROM Owlhowl.device d
+WHERE devicename = 'x';
+
+//Insert a message
+//x is to be the message to post
+//y is the lat
+//z is the lng
+//d is the hashed device name
+INSERT INTO Owlhowl.message(message, lat, lng, deviceID, handleID)
+SELECT 'x', y, z, d.deviceID, h.handleID
+FROM Owlhowl.device d
+JOIN Owlhowl.handle h USING(deviceID)
+WHERE d.devicename = 'd';
