@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants">
+
+    <TextView
+        android:id="@+id/list_item_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:text="New Text" />
+
+
+
+    <Button
+        android:id="@+id/list_item_up_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/list_item_dwn_btn"
+        android:layout_toStartOf="@+id/list_item_dwn_btn"
+        android:minHeight="20dp"
+        android:minWidth="20dp"
+        android:text="↑" />
+
+    <Button
+        android:id="@+id/list_item_dwn_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="18dp"
+        android:layout_marginRight="18dp"
+        android:minHeight="20dp"
+        android:minWidth="20dp"
+        android:text="↓" />
+</RelativeLayout>
