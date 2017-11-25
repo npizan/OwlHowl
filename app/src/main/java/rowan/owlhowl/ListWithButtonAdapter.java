@@ -67,6 +67,7 @@ public class ListWithButtonAdapter extends ArrayAdapter<String> {
 
 
         return convertView;
+
     }
 
     public class ViewHolder {

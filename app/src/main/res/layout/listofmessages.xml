@@ -29,7 +29,7 @@
 
     </ListView>
 
-    <Button
+    <!--<Button
         android:id="@+id/btupdateMessages"
         android:layout_width="match_parent"
         android:layout_height="75dp"
@@ -38,6 +38,7 @@
         android:layout_alignParentBottom="true"
         android:text="Update Howls"
         android:textSize="40dp"/>
+        -->
 
 
 </LinearLayout>

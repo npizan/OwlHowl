@@ -58,7 +58,7 @@ public class List extends AppCompatActivity {
         displayMes(data);
 
         // The update howls button on click listener
-        updateHowls = (Button) findViewById(R.id.btupdateMessages);
+        /*updateHowls = (Button) findViewById(R.id.btupdateMessages);
         updateHowls.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,7 +67,7 @@ public class List extends AppCompatActivity {
                 displayMes(data);
                 Toast.makeText(List.this, "Updated HOWLS", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
     }
 
     /**
@@ -96,4 +96,3 @@ public class List extends AppCompatActivity {
     }
 
 }
-
