@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Owl Howl</string>
+    <string name="title_activity_maps_owl_howl">Owl Howl</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string-array name="header_titles">
+        <item>This place is really nice.</item>
+        <item>These aren\'t the droids you\'re looking for. Do or do not there is no try. Luke use the force. You are not my father.</item>
+        <item>Get out of town.</item>
+
+    </string-array>
+    <string-array name="h1_items">
+        <item>OMG can you believe it?</item>
+        <item>Dude! Do not go in the bathroom</item>
+        <item>You need to try the fish.</item>
+    </string-array>
+
+    <string-array name="h2_items">
+        <item>The power of the dark side of the force.</item>
+        <item>Why</item>
+        <item>How</item>
+    </string-array>
+
+    <string-array name="h3_items">
+        <item> </item>
+        <item> </item>
+        <item> </item>
+    </string-array>
+</resources>
