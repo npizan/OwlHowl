@@ -120,7 +120,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             @Override
             public void onClick(View v) {
                 //update howls.  Initiates the Get Request to the database
-                new SendGetRequest().execute(getLocation().latitude,getLocation().longitude);
+                new SendGetRequest().execute();
                 //opens view of messages
                 Intent myIntent = new Intent(getApplicationContext(), rowan.owlhowl.List.class);
                 //b.putString("howls",howls.toString());
@@ -512,14 +512,14 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
     /**
      * Gets the data from the database upon request.
      */
-    public class SendGetRequest extends AsyncTask<Double, Void, JSONArray>{
-        protected JSONArray doInBackground(Double... arg0){
+    public class SendGetRequest extends AsyncTask<String, Void, JSONArray>{
+        protected JSONArray doInBackground(String... arg0){
             HttpURLConnection myConnection = null;
             try{
                 //build URL/Get data
                 Map<String, Object> params = new LinkedHashMap<>();
-                params.put("lat", arg0[0]);
-                params.put("lng", arg0[1]);
+                params.put("lat", getLocation().latitude);
+                params.put("lng", getLocation().longitude);
                 StringBuilder URLend = new StringBuilder();
                 for (Map.Entry<String, Object> param : params.entrySet()) {
                     if (URLend.length() != 0) {
