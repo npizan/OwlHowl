@@ -25,7 +25,7 @@
         />
 
 
-    <Button
+    <!--Button
         android:id="@+id/list_item_up_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -48,5 +48,5 @@
         android:layout_marginRight="12dp"
         android:minHeight="48dp"
         android:minWidth="48dp"
-        android:text="↓" />
+        android:text="↓" /-->
 </RelativeLayout>
