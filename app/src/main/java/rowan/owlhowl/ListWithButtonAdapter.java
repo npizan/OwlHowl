@@ -38,7 +38,7 @@ public class ListWithButtonAdapter extends ArrayAdapter<String> {
             ViewHolder viewHolder = new ViewHolder();
             //viewHolder.thumbnail = (ImageView) convertView.findViewById(R.id.list_item_thumbnail);
             viewHolder.title = (TextView) convertView.findViewById(R.id.list_item_text);
-            viewHolder.buttonUp = (Button) convertView.findViewById(R.id.list_item_up_btn);
+            /*viewHolder.buttonUp = (Button) convertView.findViewById(R.id.list_item_up_btn);
             viewHolder.buttonDwn = (Button) convertView.findViewById(R.id.list_item_dwn_btn);
             viewHolder.buttonUp.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -53,7 +53,7 @@ public class ListWithButtonAdapter extends ArrayAdapter<String> {
                     Toast.makeText(getContext(), "Button was clicked" + position, Toast.LENGTH_SHORT).show();
                 }
 
-            });
+            });*/
             convertView.setTag(viewHolder);
             //return convertView;
         }
@@ -74,7 +74,7 @@ public class ListWithButtonAdapter extends ArrayAdapter<String> {
 
         //ImageView thumbnail;
         TextView title;
-        Button buttonUp;
-        Button buttonDwn;
+        //Button buttonUp;
+        //Button buttonDwn;
     }
 }
