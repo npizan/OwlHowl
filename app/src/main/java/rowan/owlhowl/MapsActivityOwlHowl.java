@@ -45,6 +45,9 @@ import org.json.JSONObject;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -66,6 +69,7 @@ import android.widget.ExpandableListView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Main class. When the splash screen is finished
@@ -95,6 +99,8 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
     //Temp
     ExpandableListView expandableListView;
     JSONArray howls = new JSONArray();
+    static final String ID_FILE = "id_file";
+    String identifier = null;
 
 
     // This is the constructor. Sets the map up.  This is called first.  When the
@@ -104,6 +110,35 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps_owl_howl);
+
+        try{
+            //try to read from static final file location
+            FileInputStream fis =openFileInput(ID_FILE);
+            //convert bytes into string
+            StringBuffer sb = new StringBuffer("");
+            int next;
+            while((next = fis.read()) != -1){
+                sb.append((char) next);
+            }
+            fis.close();
+            //assign that string to field for use
+            identifier = sb.toString();
+        }catch (IOException e){
+            //If the file is not found, the app is being open for the first time
+            //This block will generate a UUID and write it to ID_FILE location
+            identifier = UUID.randomUUID().toString();
+            try {
+                FileOutputStream fos = openFileOutput(ID_FILE, Context.MODE_PRIVATE);
+                fos.write(identifier.getBytes());
+                fos.close();
+            }catch (Exception e1){
+                Toast.makeText(MapsActivityOwlHowl.this, "File write error", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        //TODO this is just sanity toast to see identifier when you open app; delete when we're done testing
+        Toast.makeText(MapsActivityOwlHowl.this, identifier, Toast.LENGTH_SHORT).show();
+
         new rowan.owlhowl.List();
         final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
