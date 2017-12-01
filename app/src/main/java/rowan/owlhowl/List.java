@@ -86,7 +86,7 @@ public class List extends AppCompatActivity {
             ListAdapter howlsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, howls);
             ListView howlsListView = (ListView) findViewById(R.id.howlViews);
             howlsListView.setAdapter(new ListWithButtonAdapter(this, R.layout.list_with_buttons,howls));
-            howlsListView.setAdapter(howlsAdapter);
+            //howlsListView.setAdapter(howlsAdapter);
 
 
         } catch (JSONException e) {

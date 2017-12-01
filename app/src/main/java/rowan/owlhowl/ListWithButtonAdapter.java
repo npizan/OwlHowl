@@ -55,18 +55,24 @@ public class ListWithButtonAdapter extends ArrayAdapter<String> {
 
             });
             convertView.setTag(viewHolder);
-            return convertView;
+            //return convertView;
         }
+
+
 
         mainViewholder = (ViewHolder) convertView.getTag();
 
         mainViewholder.title.setText(getItem(position));
+        //return convertView;
+
+
         return convertView;
+
     }
 
     public class ViewHolder {
 
-        ImageView thumbnail;
+        //ImageView thumbnail;
         TextView title;
         Button buttonUp;
         Button buttonDwn;
