@@ -160,6 +160,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 Intent myIntent = new Intent(getApplicationContext(), rowan.owlhowl.List.class);
                 //b.putString("howls",howls.toString());
                 myIntent.putExtra("howls", howls.toString());
+                myIntent.putExtra("identifier", identifier);
                 // This allows the exchange of returned data from the database
                 // to be handed over tho class List.
                 startActivity(myIntent);
@@ -592,7 +593,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         }
     }
 
-    public String readInput(InputStream input) throws IOException {
+    private String readInput(InputStream input) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(input));
         StringBuffer sb = new StringBuffer("");
         String line = "";
@@ -654,10 +655,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
 
             }
         }
-
-
     }
-
 
     //*********** End of misc methods area ***********************************
 
