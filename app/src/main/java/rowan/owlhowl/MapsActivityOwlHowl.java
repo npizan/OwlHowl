@@ -239,7 +239,9 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             public void onClick(View v) {
                 EditText postText = (EditText) findViewById(R.id.etLocationEntry);
                 String pos = postText.getText().toString();
-                new SendPostRequest().execute(pos);
+                if (!pos.equals("")) {
+                    new SendPostRequest().execute(pos);
+                }
                 postText.setText("");
 
                 imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
@@ -656,7 +658,5 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             }
         }
     }
-
     //*********** End of misc methods area ***********************************
-
 }

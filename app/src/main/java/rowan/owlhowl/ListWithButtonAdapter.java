@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,11 +32,13 @@ import java.util.*;
 public class ListWithButtonAdapter extends ArrayAdapter<String> {
     private int layout;
     private String identifier;
+    private JSONArray json;
     //ViewHolder mainViewholder = null;
-    public ListWithButtonAdapter(Context context, int resource, String[] howls, String identifier) {
+    public ListWithButtonAdapter(Context context, int resource, String[] howls, String identifier, JSONArray howlsJSON) {
         super(context, resource, howls);
         layout = resource;
         this.identifier=identifier;
+        json=howlsJSON;
     }
 
     @Override
