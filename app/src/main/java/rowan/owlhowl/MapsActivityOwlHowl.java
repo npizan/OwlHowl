@@ -518,6 +518,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 params.put("message", arg0[0]);
                 params.put("lat", getLocation().latitude);
                 params.put("lng", getLocation().longitude);
+                params.put("deviceName", identifier);
                 StringBuilder postData = new StringBuilder();
                 for (Map.Entry<String, Object> param : params.entrySet()) {
                     if (postData.length() != 0) {

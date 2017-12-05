@@ -88,9 +88,16 @@ public class List extends AppCompatActivity {
             howlsListView.setAdapter(new ListWithButtonAdapter(this, R.layout.list_with_buttons, howls, getIntent().getStringExtra("identifier"), json));
             //howlsListView.setAdapter(howlsAdapter);
 
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onBackPressed(){
+        //TODO bulk post request goes in hurr.
+        Toast.makeText(getApplicationContext(), "hi dad", Toast.LENGTH_SHORT).show();
+        finish();
+        return;
     }
 }

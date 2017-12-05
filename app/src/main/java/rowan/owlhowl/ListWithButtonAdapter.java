@@ -69,7 +69,6 @@ public class ListWithButtonAdapter extends ArrayAdapter<String> {
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Button was clicked" + getItem(position), Toast.LENGTH_SHORT).show();
             }
-
         });
 
         return convertView;
