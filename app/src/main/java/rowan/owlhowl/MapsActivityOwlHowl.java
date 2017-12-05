@@ -156,14 +156,6 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             public void onClick(View v) {
                 //update howls.  Initiates the Get Request to the database
                 new SendGetRequest().execute(getLocation().latitude, getLocation().longitude);
-                //opens view of messages
-                Intent myIntent = new Intent(getApplicationContext(), rowan.owlhowl.List.class);
-                //b.putString("howls",howls.toString());
-                myIntent.putExtra("howls", howls.toString());
-                myIntent.putExtra("identifier", identifier);
-                // This allows the exchange of returned data from the database
-                // to be handed over tho class List.
-                startActivity(myIntent);
             }
         });
 
@@ -303,9 +295,6 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 12.0f));
         // Draw the circle that surrounds that location
         circle = drawCircle(myLocation);
-        // initiate the send get request so it can be ready when called
-        new SendGetRequest().execute(myLocation.latitude, myLocation.longitude);
-
         // onInfo window click listener.  THis saves the locations.
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
@@ -314,20 +303,11 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 if (!savedLocations.contains(markerPosition)){
                     savedLocations.add(markerPosition);
                     Toast.makeText(MapsActivityOwlHowl.this, "Location saved", Toast.LENGTH_SHORT).show();
-                    new SendGetRequest().execute(markerPosition.latitude, markerPosition.longitude);
                 } else {
 
                     Toast.makeText(MapsActivityOwlHowl.this, "send get request", Toast.LENGTH_SHORT).show();
                     //update howls.  Initiates the Get Request to the database
                     new SendGetRequest().execute(markerPosition.latitude, markerPosition.longitude);
-                    //opens view of messages
-                    Intent myIntent = new Intent(getApplicationContext(), rowan.owlhowl.List.class);
-                    //b.putString("howls",howls.toString());
-                    myIntent.putExtra("howls", howls.toString());
-                    myIntent.putExtra("identifier", identifier);
-                    // This allows the exchange of returned data from the database
-                    // to be handed over tho class List.
-                    startActivity(myIntent);
                 }
 
             }
@@ -610,6 +590,18 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             }finally{
                 myConnection.disconnect();
             }
+        }
+
+        @Override
+        protected void onPostExecute(JSONArray jsonArray) {
+            //opens view of messages
+            Intent myIntent = new Intent(getApplicationContext(), rowan.owlhowl.List.class);
+            //b.putString("howls",howls.toString());
+            myIntent.putExtra("howls", howls.toString());
+            myIntent.putExtra("identifier", identifier);
+            // This allows the exchange of returned data from the database
+            // to be handed over tho class List.
+            startActivity(myIntent);
         }
     }
 
