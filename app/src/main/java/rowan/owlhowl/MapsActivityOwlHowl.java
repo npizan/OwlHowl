@@ -311,8 +311,25 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             @Override
             public void onInfoWindowClick(Marker marker) {
                 LatLng markerPosition = marker.getPosition();
-                savedLocations.add(markerPosition);
-                Toast.makeText(MapsActivityOwlHowl.this, "Location saved", Toast.LENGTH_SHORT).show();
+                if (!savedLocations.contains(markerPosition)){
+                    savedLocations.add(markerPosition);
+                    Toast.makeText(MapsActivityOwlHowl.this, "Location saved", Toast.LENGTH_SHORT).show();
+                    new SendGetRequest().execute(markerPosition.latitude, markerPosition.longitude);
+                } else {
+
+                    Toast.makeText(MapsActivityOwlHowl.this, "send get request", Toast.LENGTH_SHORT).show();
+                    //update howls.  Initiates the Get Request to the database
+                    new SendGetRequest().execute(markerPosition.latitude, markerPosition.longitude);
+                    //opens view of messages
+                    Intent myIntent = new Intent(getApplicationContext(), rowan.owlhowl.List.class);
+                    //b.putString("howls",howls.toString());
+                    myIntent.putExtra("howls", howls.toString());
+                    myIntent.putExtra("identifier", identifier);
+                    // This allows the exchange of returned data from the database
+                    // to be handed over tho class List.
+                    startActivity(myIntent);
+                }
+
             }
         });
 
