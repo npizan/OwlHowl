@@ -32,14 +32,10 @@ import java.util.*;
 
 public class ListWithButtonAdapter extends ArrayAdapter<String> {
     private int layout;
-    private String identifier;
-    private JSONArray json;
     //ViewHolder mainViewholder = null;
-    public ListWithButtonAdapter(Context context, int resource, String[] howls, String identifier, JSONArray howlsJSON) {
+    public ListWithButtonAdapter(Context context, int resource, String[] howls) {
         super(context, resource, howls);
         layout = resource;
-        this.identifier=identifier;
-        json=howlsJSON;
     }
 
     @Override
@@ -80,72 +76,5 @@ public class ListWithButtonAdapter extends ArrayAdapter<String> {
         TextView title;
         Button buttonUp;
         Button buttonDwn;
-    }
-
-    public class SendPostRequest extends AsyncTask<String, Void, String> {
-        protected String doInBackground(String... arg0){
-            HttpURLConnection myConnection = null;
-            try{
-                //TODO change to real URL
-                URL owlHowlPostEndpoint = new URL("http://ec2-34-230-76-33.compute-1.amazonaws.com:8080/message");
-                //build request data
-                Map<String, Object> params = new LinkedHashMap<>();
-                params.put("message", arg0[0]);
-                params.put("vote", arg0[1]);
-                params.put("identifier", arg0[2]);
-                StringBuilder postData = new StringBuilder();
-                for (Map.Entry<String, Object> param : params.entrySet()) {
-                    if (postData.length() != 0) {
-                        postData.append('&');
-                    }
-                    postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
-                    postData.append('=');
-                    postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
-                }
-                byte[] postDataBytes =postData.toString().getBytes("UTF-8");
-
-                //Set connection
-                myConnection = (HttpURLConnection) owlHowlPostEndpoint.openConnection();
-                myConnection.setReadTimeout(10000);
-                myConnection.setConnectTimeout(10000);
-                myConnection.setRequestMethod("POST");
-                myConnection.setDoOutput(true);
-                myConnection.setDoInput(true);
-                myConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                myConnection.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
-                //Write the data
-                myConnection.getOutputStream().write(postDataBytes);
-
-                int responseCode = myConnection.getResponseCode();
-
-                if(responseCode == HttpURLConnection.HTTP_OK){
-                    return readInput(myConnection.getInputStream());
-                }
-                else{
-                    return "HTTP Error : "+responseCode;
-                }
-            }catch(Exception e){
-                return "Caught exception: "+e.getMessage();
-            }finally{
-                myConnection.disconnect();
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String result){
-
-            Toast.makeText(getContext(),result,Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private String readInput(InputStream input) throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(input));
-        StringBuffer sb = new StringBuffer("");
-        String line = "";
-        while((line = in.readLine()) != null){
-            sb.append(line);
-        }
-        in.close();
-        return sb.toString();
     }
 }

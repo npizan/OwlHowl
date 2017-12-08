@@ -662,11 +662,6 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         return sb.toString();
     }
 
-    public JSONArray getHowls(){
-        return howls;
-    }
-
-
     /**
      * Gets the saved LatLng objects in the savedLocations Arraylist and
      * creates a custom marker.  It then displays them on the map.
