@@ -5,6 +5,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -96,6 +97,8 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
     Circle circle;
     List<Marker> mMarkers = new ArrayList<Marker>();
     List<LatLng> savedLocations = new ArrayList<LatLng>();
+    List<String> savedLocs = new ArrayList<String>();
+
     //Temp
     ExpandableListView expandableListView;
     JSONArray howls = new JSONArray();
@@ -290,19 +293,61 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         // Get current location and focus upon start up
-        LatLng myLocation = getLocation();
+        final LatLng myLocation = getLocation();
         // move the camera to that location and zoom in
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 12.0f));
         // Draw the circle that surrounds that location
         circle = drawCircle(myLocation);
+
+        // upon start up check to see if there are saved locations.
+        // If there is, load them into the arraylist
+
+            SharedPreferences settings = getSharedPreferences("PREFS", 0);
+            String savedLocsString = settings.getString("savedLocs", "");
+            String[] itemsSavedLocs = savedLocsString.split(":");
+
+        for (String pair : itemsSavedLocs) {
+            double lat = Double.valueOf(pair.split(",")[0]);
+            double lng = Double.valueOf(pair.split(",")[1]);
+            savedLocations.add(new LatLng(lat, lng));
+        }
+
+            /*for (int i = 0; i < itemsSavedLocs.length; i++){
+                savedLocs.add(itemsSavedLocs[i]);
+            }
+            for (String s : savedLocs){
+               String[] sa = s.split(",");
+
+            }*/
         // onInfo window click listener.  THis saves the locations.
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
                 LatLng markerPosition = marker.getPosition();
+                // If the marker position is NOT in the arrayList then add it
                 if (!savedLocations.contains(markerPosition)){
                     savedLocations.add(markerPosition);
                     Toast.makeText(MapsActivityOwlHowl.this, "Location saved", Toast.LENGTH_SHORT).show();
+
+                    // attempt at storing
+
+                    for(LatLng ll : savedLocations){
+                        String s = String.valueOf(ll.latitude + "," + ll.longitude);
+                        savedLocs.add(s);
+
+                    }
+
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for(String s : savedLocs){
+                        stringBuilder.append(s);
+                        stringBuilder.append(":");
+                    }
+                    SharedPreferences settings = getSharedPreferences("PREFS", 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString("savedLocs", stringBuilder.toString());
+                    editor.commit();
+
+                    // If the marker is already in the list then get the messages
                 } else {
 
                     Toast.makeText(MapsActivityOwlHowl.this, "send get request", Toast.LENGTH_SHORT).show();
@@ -311,6 +356,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 }
 
             }
+
         });
 
         // Create the marker that shows up on the user's location
@@ -668,5 +714,6 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             }
         }
     }
+
     //*********** End of misc methods area ***********************************
 }
