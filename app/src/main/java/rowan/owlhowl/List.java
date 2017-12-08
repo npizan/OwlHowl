@@ -168,32 +168,31 @@ public class List extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //TODO bulk post request goes in hurr.
-        Toast.makeText(getApplicationContext(), "hi dad", Toast.LENGTH_SHORT).show();
+        new SendPostRequest().execute(changes);
         finish();
     }
 
-    public class SendPostRequest extends AsyncTask<String, Void, String> {
-        protected String doInBackground(String... arg0) {
+    public class SendPostRequest extends AsyncTask<JSONArray, Void, String> {
+        protected String doInBackground(JSONArray... arg0) {
             HttpURLConnection myConnection = null;
             try {
                 //TODO change to real URL
                 URL owlHowlPostEndpoint = new URL("http://ec2-34-230-76-33.compute-1.amazonaws.com:8080/message");
                 //build request data
-                Map<String, Object> params = new LinkedHashMap<>();
-                params.put("message", arg0[0]);
-                params.put("vote", arg0[1]);
-                params.put("identifier", arg0[2]);
-                StringBuilder postData = new StringBuilder();
-                for (Map.Entry<String, Object> param : params.entrySet()) {
-                    if (postData.length() != 0) {
-                        postData.append('&');
-                    }
-                    postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
-                    postData.append('=');
-                    postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
-                }
-                byte[] postDataBytes = postData.toString().getBytes("UTF-8");
+//                Map<String, Object> params = new LinkedHashMap<>();
+//                params.put("message", arg0[0]);
+//                params.put("vote", arg0[1]);
+//                params.put("identifier", arg0[2]);
+//                StringBuilder postData = new StringBuilder();
+//                for (Map.Entry<String, Object> param : params.entrySet()) {
+//                    if (postData.length() != 0) {
+//                        postData.append('&');
+//                    }
+//                    postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+//                    postData.append('=');
+//                    postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+//                }
+                byte[] postDataBytes = changes.toString().getBytes("UTF-8");
 
                 //Set connection
                 myConnection = (HttpURLConnection) owlHowlPostEndpoint.openConnection();
@@ -223,7 +222,7 @@ public class List extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-
+            //TODO this is server response for POSTing changes; remove when done testing
             Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
         }
     }
