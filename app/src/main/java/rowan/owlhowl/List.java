@@ -36,7 +36,7 @@ import rowan.owlhowl.MapsActivityOwlHowl;
  * are displayed on.
  */
 
-public class List extends AppCompatActivity {
+public class List extends AppCompatActivity{
     Button updateHowls;
     String data = "";
     Button temp;
@@ -79,12 +79,30 @@ public class List extends AppCompatActivity {
     public void displayMes(String data){
         try{
             JSONArray json = new JSONArray(data);
-            String[] howls = new String[json.length()];
+            final String[] howls = new String[json.length()];
             for(int i=0; i<json.length();i++){
                 howls[i]= json.getJSONObject(i).getString("message");
             }
             ListAdapter howlsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, howls);
             ListView howlsListView = (ListView) findViewById(R.id.howlViews);
+            howlsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    long viewId = view.getId();
+
+                    if (viewId == R.id.list_item_up_btn) {
+                        Toast.makeText(getApplicationContext(), "Button up clicked "+position, Toast.LENGTH_SHORT).show();
+                    } else if (viewId == R.id.list_item_dwn_btn) {
+                        Toast.makeText(getApplicationContext(), "Button down clicked "+position, Toast.LENGTH_SHORT).show();
+                    }
+                    // this block is for when the text in the view is clicked
+                    // useful for opening a comment view, displaying full message etc.
+//                    else {
+//                        Toast.makeText(getApplicationContext(), "Text clicked " + howls[position], Toast.LENGTH_SHORT).show();
+//                    }
+                }
+            });
             howlsListView.setAdapter(new ListWithButtonAdapter(this, R.layout.list_with_buttons, howls, getIntent().getStringExtra("identifier"), json));
             //howlsListView.setAdapter(howlsAdapter);
 
@@ -98,6 +116,5 @@ public class List extends AppCompatActivity {
         //TODO bulk post request goes in hurr.
         Toast.makeText(getApplicationContext(), "hi dad", Toast.LENGTH_SHORT).show();
         finish();
-        return;
     }
 }

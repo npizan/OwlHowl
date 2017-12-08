@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +43,7 @@ public class ListWithButtonAdapter extends ArrayAdapter<String> {
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
         ViewHolder mainViewholder = null;
 
         if(convertView == null){
@@ -61,13 +62,13 @@ public class ListWithButtonAdapter extends ArrayAdapter<String> {
         mainViewholder.buttonUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Button was clicked" + getItem(position), Toast.LENGTH_SHORT).show();
+                ((ListView) parent).performItemClick(v, position, 0);
             }
         });
         mainViewholder.buttonDwn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Button was clicked" + getItem(position), Toast.LENGTH_SHORT).show();
+                ((ListView) parent).performItemClick(v, position, 0);
             }
         });
 
