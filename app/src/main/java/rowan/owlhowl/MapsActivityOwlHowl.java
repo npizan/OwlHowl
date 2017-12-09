@@ -91,6 +91,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
     Button post;
     Button getMessages;
     Button getLoc;
+    Button clearsaved;
     static final int REQUEST_LOCATION = 1;
     LocationManager locationManager;
     LatLng myLocation;
@@ -261,7 +262,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         //getLocation(); // not used
 
-        //
+        // Get Saved Locations button
         getLoc = (Button) findViewById(R.id.getLocation);
         getLoc.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -274,6 +275,17 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
 
             }
 
+        });
+
+        // Clear Saved Locations button
+
+        clearsaved = (Button) findViewById(R.id.clearSaved);
+        clearsaved.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                savedLocations.clear();
+                mMap.clear();
+            }
         });
     }
     // ******************   End onCreate() Area *********************
@@ -299,8 +311,8 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         // Draw the circle that surrounds that location
         circle = drawCircle(myLocation);
 
-        // upon start up check to see if there are saved locations.
-        // If there is, load them into the arraylist
+        // upon start up read from the sharedPerferences String
+        // and re-populate the ArrayList<Latlng> with the saved location
 
             SharedPreferences settings = getSharedPreferences("PREFS", 0);
             String savedLocsString = settings.getString("savedLocs", "");
@@ -312,13 +324,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             savedLocations.add(new LatLng(lat, lng));
         }
 
-            /*for (int i = 0; i < itemsSavedLocs.length; i++){
-                savedLocs.add(itemsSavedLocs[i]);
-            }
-            for (String s : savedLocs){
-               String[] sa = s.split(",");
 
-            }*/
         // onInfo window click listener.  THis saves the locations.
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
