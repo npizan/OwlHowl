@@ -42,6 +42,7 @@ public class List extends AppCompatActivity {
     // Button updateHowls;
     JSONArray data = null;
     JSONArray changes = new JSONArray();
+    //TODO probably wont use; need for unique votes if we get that far
     String identifier = "";
 
 
@@ -105,7 +106,7 @@ public class List extends AppCompatActivity {
                     if (viewId == R.id.list_item_up_btn) {
                         upVote(data.getJSONObject(position).getInt("messageID"), position);
                     } else if (viewId == R.id.list_item_dwn_btn) {
-                        Toast.makeText(getApplicationContext(), "Button down clicked " + position, Toast.LENGTH_SHORT).show();
+                        downVote(data.getJSONObject(position).getInt("messageID"), position);
                     }
                     // this block is for when the text in the view is clicked
                     // useful for opening a comment view, displaying full message etc.
@@ -122,54 +123,52 @@ public class List extends AppCompatActivity {
     }
 
     private void upVote(int messageID, int position) throws JSONException {
-
-        //make a temp copy for quicker comparisons
-        JSONObject temp = changes.getJSONObject(position);
-
-        //if the copy is null, no change has been made; create a change
-        if(temp==null) {
+        //if the position is null, no change has been made; create a change
+        if(changes.isNull(position)) {
             HashMap<String, Object> change = new HashMap<>();
             change.put("messageID", messageID);
             change.put("vote", 1);
-            //TODO might not need deviceName, confirm with backend
-            change.put("deviceName", identifier);
             changes.put(position, new JSONObject(change));
         }else //if the change already exists and it's an upvote, remove the change
-            if(temp.getInt("vote")==1){
+            if(changes.getJSONObject(position).getInt("vote")==1){
             changes.put(position,null);
         }else //if the change already exists and is a downvote, change it to an upvote
-            if(temp.getInt("vote")==0){
+            if(changes.getJSONObject(position).getInt("vote")==-1){
                 changes.getJSONObject(position).put("vote",1);
             }
         //TODO adjust local vote display
     }
 
     private void downVote(int messageID, int position) throws JSONException {
-
-        //make a temp copy for quicker comparisons
-        JSONObject temp = changes.getJSONObject(position);
-
-        //if the copy is null, no change has been made; create a change
-        if(temp==null) {
+        //if the position is null, no change has been made; create a change
+        if(changes.isNull(position)) {
             HashMap<String, Object> change = new HashMap<>();
             change.put("messageID", messageID);
-            change.put("vote", 0);
-            //TODO might not need deviceName, confirm with backend
-            change.put("deviceName", identifier);
+            change.put("vote", -1);
             changes.put(position, new JSONObject(change));
         }else //if the change already exists and it's an downvote, remove the change
-            if(temp.getInt("vote")==0){
+            if(changes.getJSONObject(position).getInt("vote")==-1){
                 changes.put(position,null);
             }else //if the change already exists and is a upvote, change it to a downvote
-                if(temp.getInt("vote")==1){
-                    changes.getJSONObject(position).put("vote",0);
+                if(changes.getJSONObject(position).getInt("vote")==1){
+                    changes.getJSONObject(position).put("vote",-1);
                 }
         //TODO adjust local vote display
     }
 
     @Override
     public void onBackPressed() {
-        //new SendPostRequest().execute(changes);
+        JSONArray postChanges = new JSONArray();
+        for(int i=0;i<changes.length();i++){
+            if(!changes.isNull(i)){
+                try {
+                    postChanges.put(changes.getJSONObject(i));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        //new SendPostRequest().execute(postChanges);
         finish();
     }
 
