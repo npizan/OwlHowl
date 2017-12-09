@@ -316,12 +316,14 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
 
             SharedPreferences settings = getSharedPreferences("PREFS", 0);
             String savedLocsString = settings.getString("savedLocs", "");
+        if(!savedLocsString.equals("")) {
             String[] itemsSavedLocs = savedLocsString.split(":");
 
-        for (String pair : itemsSavedLocs) {
-            double lat = Double.valueOf(pair.split(",")[0]);
-            double lng = Double.valueOf(pair.split(",")[1]);
-            savedLocations.add(new LatLng(lat, lng));
+            for (String pair : itemsSavedLocs) {
+                double lat = Double.valueOf(pair.split(",")[0]);
+                double lng = Double.valueOf(pair.split(",")[1]);
+                savedLocations.add(new LatLng(lat, lng));
+            }
         }
 
 

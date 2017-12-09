@@ -42,7 +42,7 @@ public class List extends AppCompatActivity {
     // Button updateHowls;
     JSONArray data = null;
     JSONArray changes = new JSONArray();
-    String identifier = getIntent().getStringExtra("identifier");
+    String identifier = "";
 
 
     /**
@@ -57,6 +57,7 @@ public class List extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listofmessages);
+        identifier = getIntent().getStringExtra("identifier");
         try {
             data = new JSONArray(getIntent().getStringExtra("howls"));
         } catch (JSONException e) {
@@ -168,7 +169,7 @@ public class List extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        new SendPostRequest().execute(changes);
+        //new SendPostRequest().execute(changes);
         finish();
     }
 
