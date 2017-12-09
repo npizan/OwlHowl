@@ -41,7 +41,7 @@
         android:id="@+id/btClear"
         android:layout_width="wrap_content"
         android:layout_height="65dp"
-        android:text="Clear"
+        android:text="Clear Map"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"/>
 

@@ -6,7 +6,7 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="100dp"
-        android:layout_height="137dp"
+        android:layout_height="164dp"
         android:src="@mipmap/profhead2" />
 
     <LinearLayout
@@ -19,14 +19,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView"
-            android:textSize="20dp"/>
+            android:textSize="22dp"/>
 
         <TextView
             android:layout_marginLeft="10dp"
             android:id="@+id/tv_Snippet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18dp"
+            android:textSize="20dp"
             android:text="TextView"/>
 
         <TextView
@@ -36,6 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
+            android:textSize="20dp"
             android:text="TextView"/>
 
         <TextView

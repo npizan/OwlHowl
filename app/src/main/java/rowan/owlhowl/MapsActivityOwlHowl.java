@@ -388,7 +388,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         // Create the marker that shows up on the user's location
         MarkerOptions options = new MarkerOptions()
                 .position(myLocation)
-                .title("'POST' an anonymous HOWL at the top,")
+                .title("'POST' an 'ANONYMOUS HOWL' at the top")
                 .icon(BitmapDescriptorFactory.fromResource(R.mipmap.profhead))
                 .snippet("or press the 'Get HOWLS' button below.");
         Marker marker1 = mMap.addMarker(options);
@@ -435,9 +435,9 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
 
                 MarkerOptions optionsOnClick = new MarkerOptions()
                         .position(latLng)
-                        .title("     Selected Map Location")
+                        .title("CLICK WINDOW to SAVE LOCATION")
                         .icon(BitmapDescriptorFactory.fromResource(R.mipmap.proftorch))
-                        .snippet("Click this window to add to your Saved Locations?");
+                        .snippet("If this location is already saved,");
                 Marker marker3 = mMap.addMarker(optionsOnClick);
                 mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
                     @Override
@@ -457,7 +457,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                         LatLng ll = marker.getPosition();
                         tvLocality.setText(marker.getTitle());
                         tvSnippet.setText(marker.getSnippet());
-                        tvRadius.setText("Press the Google Maps tool bar for directions to this location.");
+                        tvRadius.setText("CLICK to GET HOWLS");
                         tvLat.setText("Latitude: " + ll.latitude);
                         tvLong.setText("Longitude: " + ll.longitude);
 
@@ -700,7 +700,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             for(LatLng s: savedLocations){
                 MarkerOptions options5 = new MarkerOptions()
                         .position(s)
-                        .title("Saved Location")
+                        .title("SAVED LOCATION")
                         .icon(BitmapDescriptorFactory.fromResource(R.mipmap.heart))
                         .snippet("");
                 Marker savLocMark = mMap.addMarker(options5);
@@ -722,7 +722,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                         LatLng ll = marker.getPosition();
                         tvLocality.setText(marker.getTitle());
                         tvSnippet.setText(marker.getSnippet());
-                        tvRaius.setText("");
+                        tvRaius.setText("CLICK to GET HOWLS");
                         tvLat.setText("Latitude: " + ll.latitude);
                         tvLong.setText("Longitude: " + ll.longitude);
 
