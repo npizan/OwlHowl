@@ -158,17 +158,21 @@ public class List extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        JSONArray postChanges = new JSONArray();
-        for(int i=0;i<changes.length();i++){
-            if(!changes.isNull(i)){
-                try {
-                    postChanges.put(changes.getJSONObject(i));
-                } catch (JSONException e) {
-                    e.printStackTrace();
+        //if there are any changes
+        if(changes.length()!=0) {
+            JSONArray postChanges = new JSONArray();
+            //go through the list
+            for (int i = 0; i < changes.length(); i++) {
+                if (!changes.isNull(i)) {
+                    try {
+                        postChanges.put(changes.getJSONObject(i));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
+            new SendPostRequest().execute(postChanges);
         }
-        //new SendPostRequest().execute(postChanges);
         finish();
     }
 
@@ -177,22 +181,20 @@ public class List extends AppCompatActivity {
             HttpURLConnection myConnection = null;
             try {
                 //TODO change to real URL
-                URL owlHowlPostEndpoint = new URL("http://ec2-34-230-76-33.compute-1.amazonaws.com:8080/message");
+                URL owlHowlPostEndpoint = new URL("http://ec2-34-230-76-33.compute-1.amazonaws.com:8080/rating");
                 //build request data
-//                Map<String, Object> params = new LinkedHashMap<>();
-//                params.put("message", arg0[0]);
-//                params.put("vote", arg0[1]);
-//                params.put("identifier", arg0[2]);
-//                StringBuilder postData = new StringBuilder();
-//                for (Map.Entry<String, Object> param : params.entrySet()) {
-//                    if (postData.length() != 0) {
-//                        postData.append('&');
-//                    }
-//                    postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
-//                    postData.append('=');
-//                    postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
-//                }
-                byte[] postDataBytes = changes.toString().getBytes("UTF-8");
+                Map<String, Object> params = new LinkedHashMap<>();
+                params.put("ratingChanges", arg0[0]);
+                StringBuilder postData = new StringBuilder();
+                for (Map.Entry<String, Object> param : params.entrySet()) {
+                    if (postData.length() != 0) {
+                        postData.append('&');
+                    }
+                    postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+                    postData.append('=');
+                    postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+                }
+                byte[] postDataBytes = postData.toString().getBytes("UTF-8");
 
                 //Set connection
                 myConnection = (HttpURLConnection) owlHowlPostEndpoint.openConnection();
