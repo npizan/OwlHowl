@@ -163,6 +163,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             }
         });
 
+
         //Creates the zoom in and out environment
         zoom = (ZoomControls) findViewById(R.id.zcZoom);
         zoom.setOnZoomOutClickListener(new View.OnClickListener() {
@@ -179,8 +180,8 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             }
         });
 
-        // Mark button places a marker on the map from a
-        // finger click.
+
+        // My Location button places a marker on the map from finger click.
         markBt = (Button) findViewById(R.id.btMark);
         markBt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,6 +227,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             }
         });
 
+
         // Post button gets the text form the main textView and
         // sends it to the database.
         post = (Button) findViewById(R.id.btPost);
@@ -244,6 +246,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             }
         });
 
+
         // Clear button calls the method removeMarkers()
         // We had to add the markers to an arrayList so that
         // the circle would stay on the screen when we cleared the
@@ -258,9 +261,10 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             }
         });
 
+
         // calls the locationManager
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        //getLocation(); // not used
+
 
         // Get Saved Locations button
         getLoc = (Button) findViewById(R.id.getLocation);
@@ -271,11 +275,10 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 LatLng latLng = getLocation();
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 8.0f));
                 getSavedLocations();
-
-
             }
 
         });
+
 
         // Clear Saved Locations button
 
@@ -283,8 +286,20 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         clearsaved.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Clear both ArrayLists and the map
                 savedLocations.clear();
+                savedLocs.clear();
                 mMap.clear();
+                // Build an empty String to over-write what is currently there
+                StringBuilder stringBuilder = new StringBuilder();
+                for(String s : savedLocs) {
+                    stringBuilder.append(s);
+                }
+                // Store the empty String
+                SharedPreferences settings = getSharedPreferences("PREFS", 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString("savedLocs", stringBuilder.toString());
+                editor.commit();
             }
         });
     }
@@ -316,6 +331,9 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
 
             SharedPreferences settings = getSharedPreferences("PREFS", 0);
             String savedLocsString = settings.getString("savedLocs", "");
+        // If what is stored in sharedPerferences is not empty then
+        // convert it back to Doubles to create the Latlng Objects and
+        // reload the ArrayList<Latlng>
         if(!savedLocsString.equals("")) {
             String[] itemsSavedLocs = savedLocsString.split(":");
 
