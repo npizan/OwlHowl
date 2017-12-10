@@ -57,6 +57,7 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Array;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.net.URL;
@@ -70,6 +71,7 @@ import android.widget.ExpandableListView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -186,6 +188,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         markBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mMap.clear();
                 LatLng myLocation = getLocation();
                 // create a custom marker
                 MarkerOptions options2 = new MarkerOptions()
@@ -224,6 +227,8 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 mMarkers.add(marker2);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 12.0f));
+
+                drawCircle(myLocation);
             }
         });
 
@@ -290,15 +295,12 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 savedLocations.clear();
                 savedLocs.clear();
                 mMap.clear();
-                // Build an empty String to over-write what is currently there
-                StringBuilder stringBuilder = new StringBuilder();
-                for(String s : savedLocs) {
-                    stringBuilder.append(s);
-                }
-                // Store the empty String
+
+
+                // Clear SharedPerferences data
                 SharedPreferences settings = getSharedPreferences("PREFS", 0);
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putString("savedLocs", stringBuilder.toString());
+                SharedPreferences.Editor editor = settings.edit().clear();
+
                 editor.commit();
             }
         });
@@ -335,12 +337,22 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         // convert it back to Doubles to create the Latlng Objects and
         // reload the ArrayList<Latlng>
         if(!savedLocsString.equals("")) {
+            Set<LatLng> set = new HashSet<>();
             String[] itemsSavedLocs = savedLocsString.split(":");
 
             for (String pair : itemsSavedLocs) {
                 double lat = Double.valueOf(pair.split(",")[0]);
                 double lng = Double.valueOf(pair.split(",")[1]);
                 savedLocations.add(new LatLng(lat, lng));
+
+                // This wipes out the duplicate Latlng Objects that I am ending up with
+                // from reading and writing to sharedPerferences.  Store them in a Hashset
+                // then repopulate the ArrayList with no duplicates.
+                set.addAll(savedLocations);
+                savedLocations.clear();
+                savedLocations.addAll(set);
+
+
             }
         }
 
@@ -380,6 +392,41 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                     //update howls.  Initiates the Get Request to the database
                     new SendGetRequest().execute(markerPosition.latitude, markerPosition.longitude);
                 }
+
+            }
+
+        });
+
+        mMap.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
+            @Override
+            public void onInfoWindowLongClick(Marker marker) {
+
+                Toast.makeText(MapsActivityOwlHowl.this, "Location Removed", Toast.LENGTH_SHORT).show();
+                LatLng markerPosition = marker.getPosition();
+                savedLocations.remove(markerPosition);
+                savedLocs.clear();
+                mMap.clear();
+                drawCircle(myLocation);
+                getSavedLocations();
+                SharedPreferences settings = getSharedPreferences("PREFS", 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.clear();
+                editor.commit();
+
+                for(LatLng ll : savedLocations){
+                    String s = String.valueOf(ll.latitude + "," + ll.longitude);
+                    savedLocs.add(s);
+
+                }
+
+                StringBuilder stringBuilder = new StringBuilder();
+                for(String s : savedLocs){
+                    stringBuilder.append(s);
+                    stringBuilder.append(":");
+                }
+
+                editor.putString("savedLocs", stringBuilder.toString());
+                editor.commit();
 
             }
 
