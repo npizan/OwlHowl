@@ -482,7 +482,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
 
                 MarkerOptions optionsOnClick = new MarkerOptions()
                         .position(latLng)
-                        .title("CLICK WINDOW to SAVE LOCATION")
+                        .title("CLICK WINDOW to SAVE")
                         .icon(BitmapDescriptorFactory.fromResource(R.mipmap.proftorch))
                         .snippet("If this location is already saved,");
                 Marker marker3 = mMap.addMarker(optionsOnClick);
@@ -747,9 +747,9 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
             for(LatLng s: savedLocations){
                 MarkerOptions options5 = new MarkerOptions()
                         .position(s)
-                        .title("SAVED LOCATION")
+                        .title("SAVED MAP LOCATION")
                         .icon(BitmapDescriptorFactory.fromResource(R.mipmap.heart))
-                        .snippet("");
+                        .snippet("CLICK to GET HOWLS");
                 Marker savLocMark = mMap.addMarker(options5);
                 mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
                     @Override
@@ -769,7 +769,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                         LatLng ll = marker.getPosition();
                         tvLocality.setText(marker.getTitle());
                         tvSnippet.setText(marker.getSnippet());
-                        tvRaius.setText("CLICK to GET HOWLS");
+                        tvRaius.setText("or LONG CLICK to DELETE");
                         tvLat.setText("Latitude: " + ll.latitude);
                         tvLong.setText("Longitude: " + ll.longitude);
 
