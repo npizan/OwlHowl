@@ -118,7 +118,7 @@ public class List extends AppCompatActivity {
                 }
             }
         });
-        howlsListView.setAdapter(new ListWithButtonAdapter(this, R.layout.list_with_buttons, howls));
+        howlsListView.setAdapter(new ListWithButtonAdapter(this, R.layout.list_with_buttons, howls, data));
         //howlsListView.setAdapter(howlsAdapter);
     }
 
@@ -158,10 +158,8 @@ public class List extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //if there are any changes
         if(changes.length()!=0) {
             JSONArray postChanges = new JSONArray();
-            //go through the list
             for (int i = 0; i < changes.length(); i++) {
                 if (!changes.isNull(i)) {
                     try {
@@ -185,6 +183,8 @@ public class List extends AppCompatActivity {
                 //build request data
                 Map<String, Object> params = new LinkedHashMap<>();
                 params.put("ratingChanges", arg0[0]);
+//                params.put("vote", arg0[1]);
+//                params.put("identifier", arg0[2]);
                 StringBuilder postData = new StringBuilder();
                 for (Map.Entry<String, Object> param : params.entrySet()) {
                     if (postData.length() != 0) {

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,10 +33,12 @@ import java.util.*;
 
 public class ListWithButtonAdapter extends ArrayAdapter<String> {
     private int layout;
+    private JSONArray data;
     //ViewHolder mainViewholder = null;
-    public ListWithButtonAdapter(Context context, int resource, String[] howls) {
+    public ListWithButtonAdapter(Context context, int resource, String[] howls, JSONArray data) {
         super(context, resource, howls);
         layout = resource;
+        this.data=data;
     }
 
     @Override
@@ -47,14 +50,20 @@ public class ListWithButtonAdapter extends ArrayAdapter<String> {
             convertView = inflater.inflate(layout, parent, false);
             ViewHolder viewHolder = new ViewHolder();
             //viewHolder.thumbnail = (ImageView) convertView.findViewById(R.id.list_item_thumbnail);
-            viewHolder.title = (TextView) convertView.findViewById(R.id.list_item_text);
-            viewHolder.buttonUp = (Button) convertView.findViewById(R.id.list_item_up_btn);
-            viewHolder.buttonDwn = (Button) convertView.findViewById(R.id.list_item_dwn_btn);
+            viewHolder.title = convertView.findViewById(R.id.list_item_text);
+            viewHolder.buttonUp = convertView.findViewById(R.id.list_item_up_btn);
+            viewHolder.buttonDwn = convertView.findViewById(R.id.list_item_dwn_btn);
+            viewHolder.handle = convertView.findViewById(R.id.handle);
 
             convertView.setTag(viewHolder);
         }
         mainViewholder = (ViewHolder) convertView.getTag();
         mainViewholder.title.setText(getItem(position));
+        try {
+            mainViewholder.handle.setText(data.getJSONObject(position).getString("handle"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         mainViewholder.buttonUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,6 +83,7 @@ public class ListWithButtonAdapter extends ArrayAdapter<String> {
     public class ViewHolder {
         //ImageView thumbnail;
         TextView title;
+        TextView handle;
         Button buttonUp;
         Button buttonDwn;
     }

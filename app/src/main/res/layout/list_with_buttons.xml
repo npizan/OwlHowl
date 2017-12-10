@@ -24,6 +24,14 @@
         android:minHeight="50dp"
         />
 
+    <TextView
+        android:id="@+id/handle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/list_item_text"
+        android:text="handle"
+        android:layout_marginLeft="16dp"/>
+
 
     <Button
         android:id="@+id/list_item_up_btn"
