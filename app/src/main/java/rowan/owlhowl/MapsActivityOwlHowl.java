@@ -748,7 +748,7 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 MarkerOptions options5 = new MarkerOptions()
                         .position(s)
                         .title("SAVED MAP LOCATION")
-                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.heart))
+                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.heart2))
                         .snippet("CLICK to GET HOWLS");
                 Marker savLocMark = mMap.addMarker(options5);
                 mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
