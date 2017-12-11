@@ -43,7 +43,6 @@ public class ListWithButtonAdapter extends ArrayAdapter<String> {
 
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
-        ViewHolder mainViewholder = null;
 
         if(convertView == null){
             LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -54,26 +53,79 @@ public class ListWithButtonAdapter extends ArrayAdapter<String> {
             viewHolder.buttonUp = convertView.findViewById(R.id.list_item_up_btn);
             viewHolder.buttonDwn = convertView.findViewById(R.id.list_item_dwn_btn);
             viewHolder.handle = convertView.findViewById(R.id.handle);
+            viewHolder.vote = convertView.findViewById(R.id.vote);
 
             convertView.setTag(viewHolder);
         }
-        mainViewholder = (ViewHolder) convertView.getTag();
+        final ViewHolder mainViewholder = (ViewHolder) convertView.getTag();
         mainViewholder.title.setText(getItem(position));
         try {
             mainViewholder.handle.setText(data.getJSONObject(position).getString("handle"));
+            mainViewholder.vote.setText(data.getJSONObject(position).getString("rating"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
         mainViewholder.buttonUp.setOnClickListener(new View.OnClickListener() {
+            boolean up=false;
+            boolean down=false;
+
             @Override
             public void onClick(View v) {
-                ((ListView) parent).performItemClick(v, position, 0);
+                try {
+                    String currentVote = data.getJSONObject(position).getString("rating");
+                    int updatedVote;
+                    ((ListView) parent).performItemClick(v, position, 0);
+                    if (!up && !down) {
+                        up = true;
+                        updatedVote = Integer.valueOf(currentVote)+1;
+                        currentVote=Integer.toString(updatedVote);
+                        mainViewholder.vote.setText(currentVote);
+                    } else if (up && !down) {
+                        up = false;
+                        mainViewholder.vote.setText(currentVote);
+                    } else if (!up && down) {
+                        up = true;
+                        down = false;
+                        updatedVote = Integer.valueOf(currentVote)+1;
+                        currentVote=Integer.toString(updatedVote);
+                        mainViewholder.vote.setText(currentVote);
+                    }
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+                mainViewholder.vote.invalidate();
             }
         });
+
         mainViewholder.buttonDwn.setOnClickListener(new View.OnClickListener() {
+            boolean up=false;
+            boolean down=false;
+
             @Override
             public void onClick(View v) {
-                ((ListView) parent).performItemClick(v, position, 0);
+                try {
+                    String currentVote = data.getJSONObject(position).getString("rating");
+                    int updatedVote;
+                    ((ListView) parent).performItemClick(v, position, 0);
+                    if (!up && !down) {
+                        down = true;
+                        updatedVote = Integer.valueOf(currentVote)-1;
+                        currentVote=Integer.toString(updatedVote);
+                        mainViewholder.vote.setText(currentVote);
+                    } else if (!up && down) {
+                        down = false;
+                        mainViewholder.vote.setText(currentVote);
+                    } else if (up && !down) {
+                        up = false;
+                        down = true;
+                        updatedVote = Integer.valueOf(currentVote)-1;
+                        currentVote=Integer.toString(updatedVote);
+                        mainViewholder.vote.setText(currentVote);
+                    }
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+                mainViewholder.vote.invalidate();
             }
         });
 
@@ -84,6 +136,7 @@ public class ListWithButtonAdapter extends ArrayAdapter<String> {
         //ImageView thumbnail;
         TextView title;
         TextView handle;
+        TextView vote;
         Button buttonUp;
         Button buttonDwn;
     }

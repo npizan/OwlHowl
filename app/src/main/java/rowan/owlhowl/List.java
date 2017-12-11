@@ -221,12 +221,6 @@ public class List extends AppCompatActivity {
                 myConnection.disconnect();
             }
         }
-
-        @Override
-        protected void onPostExecute(String result) {
-            //TODO this is server response for POSTing changes; remove when done testing
-            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
-        }
     }
 
     private String readInput(InputStream input) throws IOException {
