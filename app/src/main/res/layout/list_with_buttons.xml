@@ -14,33 +14,31 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/handle"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginRight="100dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
         android:text="New Text"
         android:textSize="20dp"
-        android:minHeight="50dp"
-        />
+        android:clickable="false"/>
 
     <TextView
         android:id="@+id/handle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/list_item_text"
-        android:text="handle"
-        android:layout_marginLeft="16dp"/>
+        android:layout_marginLeft="8dp"
+        android:layout_alignParentTop="true"
+        android:text="handle" />
 
 
     <Button
         android:id="@+id/list_item_up_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/list_item_dwn_btn"
-        android:layout_alignBottom="@+id/list_item_dwn_btn"
-        android:layout_toLeftOf="@+id/list_item_dwn_btn"
-        android:layout_toStartOf="@+id/list_item_dwn_btn"
+        android:layout_alignLeft="@+id/list_item_text"
+        android:layout_alignStart="@+id/list_item_text"
+        android:layout_below="@+id/list_item_text"
         android:minHeight="48dp"
         android:minWidth="48dp"
         android:text="↑" />
@@ -49,12 +47,24 @@
         android:id="@+id/list_item_dwn_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/list_item_text"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginEnd="12dp"
-        android:layout_marginRight="12dp"
+        android:layout_below="@+id/list_item_text"
+        android:layout_toEndOf="@+id/vote_count"
+        android:layout_toRightOf="@+id/vote_count"
         android:minHeight="48dp"
         android:minWidth="48dp"
         android:text="↓" />
+
+    <TextView
+        android:id="@+id/vote_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/list_item_up_btn"
+        android:layout_alignBottom="@+id/list_item_up_btn"
+        android:layout_toEndOf="@+id/list_item_up_btn"
+        android:layout_toRightOf="@+id/list_item_up_btn"
+        android:minWidth="48dp"
+        android:text="VoteCount"
+        android:textAlignment="center"
+        android:textSize="15dp"/>
+
 </RelativeLayout>

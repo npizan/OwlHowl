@@ -43,7 +43,6 @@ public class ListWithButtonAdapter extends ArrayAdapter<String> {
 
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
-        ViewHolder mainViewholder = null;
 
         if(convertView == null){
             LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -54,13 +53,18 @@ public class ListWithButtonAdapter extends ArrayAdapter<String> {
             viewHolder.buttonUp = convertView.findViewById(R.id.list_item_up_btn);
             viewHolder.buttonDwn = convertView.findViewById(R.id.list_item_dwn_btn);
             viewHolder.handle = convertView.findViewById(R.id.handle);
+            viewHolder.votes = convertView.findViewById(R.id.vote_count);
 
             convertView.setTag(viewHolder);
         }
-        mainViewholder = (ViewHolder) convertView.getTag();
+        final ViewHolder mainViewholder = (ViewHolder) convertView.getTag();
         mainViewholder.title.setText(getItem(position));
+
+        mainViewholder.title.setClickable(false);
+
         try {
             mainViewholder.handle.setText(data.getJSONObject(position).getString("handle"));
+            mainViewholder.votes.setText(data.getJSONObject(position).getString("rating"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -68,22 +72,52 @@ public class ListWithButtonAdapter extends ArrayAdapter<String> {
             @Override
             public void onClick(View v) {
                 ((ListView) parent).performItemClick(v, position, 0);
+                mainViewholder.votes.setText(localVoteAlter(v, true, false, position));
+                mainViewholder.buttonUp.setEnabled(false);
+                mainViewholder.buttonDwn.setEnabled(true);
             }
         });
         mainViewholder.buttonDwn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((ListView) parent).performItemClick(v, position, 0);
+                mainViewholder.votes.setText(localVoteAlter(v, false, true, position));
+                mainViewholder.buttonDwn.setEnabled(false);
+                mainViewholder.buttonUp.setEnabled(true);
             }
         });
+
 
         return convertView;
     }
 
+    private String localVoteAlter(View v, boolean voteUp, boolean voteDown, int position){
+
+        try {
+            String rating = data.getJSONObject(position).getString("rating");
+            Integer localRate;
+
+            if(voteUp == true){
+                localRate=Integer.valueOf(rating) + 1;
+                return localRate.toString();
+
+            }
+            else if (voteDown == true){
+                localRate=Integer.valueOf(rating) - 1;
+                return localRate.toString();
+            }
+
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
     public class ViewHolder {
-        //ImageView thumbnail;
         TextView title;
         TextView handle;
+        TextView votes;
         Button buttonUp;
         Button buttonDwn;
     }
