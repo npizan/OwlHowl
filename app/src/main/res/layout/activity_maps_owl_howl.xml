@@ -43,7 +43,9 @@
         android:layout_height="65dp"
         android:text="Clear Map"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"/>
+        android:layout_alignParentLeft="true"
+        android:background="@color/colorAccent"
+        android:textSize="20dp"/>
 
 
 
@@ -52,8 +54,13 @@
         android:layout_width="wrap_content"
         android:layout_height="65dp"
         android:text="My Location"
+        android:background="@color/colorAccent"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
         android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/btClear"/>
+        android:layout_toRightOf="@+id/btClear"
+        android:layout_toEndOf="@+id/btClear"
+        android:textSize="20dp"/>
 
     <ZoomControls
         android:id="@+id/zcZoom"
@@ -66,26 +73,42 @@
         android:id="@+id/btGetMes"
         android:layout_width="wrap_content"
         android:layout_height="65dp"
+        android:text="Get Howls"
+        android:textSize="20dp"
         android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@id/btMark"
-        android:text="Get Howls"/>
+        android:layout_toRightOf="@+id/btMark"
+        android:layout_toEndOf="@+id/btMark"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:background="@color/colorAccent"/>
 
     <Button
         android:id="@+id/getLocation"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Get Saved Locations"
+        android:layout_height="60dp"
+        android:text="Saved Locations"
         android:layout_below="@+id/lll"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:background="@color/colorAccent"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="5dp"
+        android:textSize="20dp"/>
 
     <Button
         android:id="@+id/clearSaved"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:text="Clear Saved "
+        android:background="@color/colorAccent"
+        android:textSize="20dp"
         android:layout_below="@+id/lll"
-        android:layout_toRightOf="@+id/getLocation"
-        android:text="Clear Saved Locations" />
+        android:layout_alignRight="@+id/btGetMes"
+        android:layout_alignEnd="@+id/btGetMes"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/getLocation"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/getLocation" />
 
 
 </RelativeLayout>
