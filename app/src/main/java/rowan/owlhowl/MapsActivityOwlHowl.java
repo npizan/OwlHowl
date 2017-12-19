@@ -101,9 +101,6 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
     List<Marker> mMarkers = new ArrayList<Marker>();
     List<LatLng> savedLocations = new ArrayList<LatLng>();
     List<String> savedLocs = new ArrayList<String>();
-
-    //Temp
-    ExpandableListView expandableListView;
     JSONArray howls = new JSONArray();
     static final String ID_FILE = "id_file";
     String identifier = null;
@@ -141,9 +138,6 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                 Toast.makeText(MapsActivityOwlHowl.this, "File write error", Toast.LENGTH_SHORT).show();
             }
         }
-
-        //TODO this is just sanity toast to see identifier when you open app; delete when we're done testing
-        Toast.makeText(MapsActivityOwlHowl.this, identifier, Toast.LENGTH_SHORT).show();
 
         new rowan.owlhowl.List();
         final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -511,7 +505,6 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
                         return v;
                     }
                 });
-                //marker3.showInfoWindow();
                 // add the maker with the following options
                 mMarkers.add(marker3);
 

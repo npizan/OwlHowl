@@ -42,7 +42,6 @@ public class List extends AppCompatActivity {
     // Button updateHowls;
     JSONArray data = null;
     JSONArray changes = new JSONArray();
-    //TODO probably wont use; need for unique votes if we get that far
     String identifier = "";
 
 
@@ -136,7 +135,6 @@ public class List extends AppCompatActivity {
             if(changes.getJSONObject(position).getInt("vote")==-1){
                 changes.getJSONObject(position).put("vote",1);
             }
-        //TODO adjust local vote display
     }
 
     private void downVote(int messageID, int position) throws JSONException {
@@ -153,7 +151,6 @@ public class List extends AppCompatActivity {
                 if(changes.getJSONObject(position).getInt("vote")==1){
                     changes.getJSONObject(position).put("vote",-1);
                 }
-        //TODO adjust local vote display
     }
 
     @Override
@@ -178,7 +175,6 @@ public class List extends AppCompatActivity {
         protected String doInBackground(JSONArray... arg0) {
             HttpURLConnection myConnection = null;
             try {
-                //TODO change to real URL
                 URL owlHowlPostEndpoint = new URL("http://ec2-34-230-76-33.compute-1.amazonaws.com:8080/rating");
                 //build request data
                 Map<String, Object> params = new LinkedHashMap<>();
