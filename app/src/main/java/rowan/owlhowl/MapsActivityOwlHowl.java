@@ -708,7 +708,6 @@ public class MapsActivityOwlHowl extends FragmentActivity implements OnMapReadyC
         protected void onPostExecute(JSONArray jsonArray) {
             //opens view of messages
             Intent myIntent = new Intent(getApplicationContext(), rowan.owlhowl.List.class);
-            //b.putString("howls",howls.toString());
             myIntent.putExtra("howls", howls.toString());
             myIntent.putExtra("identifier", identifier);
             // This allows the exchange of returned data from the database

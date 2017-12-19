@@ -65,17 +65,6 @@ public class List extends AppCompatActivity {
         }
         displayMes(data);
 
-        // The update howls button on click listener
-        /*updateHowls = (Button) findViewById(R.id.btupdateMessages);
-        updateHowls.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                data = getIntent().getStringExtra("howls");
-                displayMes(data);
-                Toast.makeText(List.this, "Updated HOWLS", Toast.LENGTH_SHORT).show();
-            }
-        });*/
     }
 
     /**
@@ -109,9 +98,7 @@ public class List extends AppCompatActivity {
                     }
                     // this block is for when the text in the view is clicked
                     // useful for opening a comment view, displaying full message etc.
-//                    else {
-//                        Toast.makeText(getApplicationContext(), "Text clicked " + howls[position], Toast.LENGTH_SHORT).show();
-//                    }
+
                 } catch (JSONException e){
                     e.printStackTrace();
                 }
@@ -179,8 +166,7 @@ public class List extends AppCompatActivity {
                 //build request data
                 Map<String, Object> params = new LinkedHashMap<>();
                 params.put("ratingChanges", arg0[0]);
-//                params.put("vote", arg0[1]);
-//                params.put("identifier", arg0[2]);
+
                 StringBuilder postData = new StringBuilder();
                 for (Map.Entry<String, Object> param : params.entrySet()) {
                     if (postData.length() != 0) {
