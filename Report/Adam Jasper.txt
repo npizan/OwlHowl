@@ -1,0 +1,8 @@
+Contributions:
+All front-end network code, including GET and POST requests.
+Parsing the server responses and storing the data as JSON.
+Optimization of vote POST requests to send requests as a bundle instead of every time a vote is made.
+UI listeners for network elements.
+Implementation of Universally Unique IDs for front end, and storing them.
+Got Handles to show on UI.
+various bug fixes: empty saved locations crash, send empty string as message, 
