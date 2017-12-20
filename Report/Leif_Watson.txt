@@ -1,0 +1,16 @@
+Leif Watson contributions
+
+Designed initial expandable listview
+Created expandable listview adapter
+Created XML file for the parent of expandable listview
+Created XML file for the child of expandable listview
+Figured out how to push import data from mapsactivity to list activity
+Developed the new listview adapter (ListWithButtonAdapter)
+Created an XML for listview and buttons
+Updated listview to display howls
+Added upvote and downvote buttons
+Updated the list_with_buttons XML to add the TextView for vote count
+Added number of votes to be displayed in listview
+Locally updates number of votes if votes are updated (so the listview does not need to be updated after every vote)
+Disabling vote buttons after vote so votes cannot be duplicated on application end
+Cleaned up project removing old unused classes
