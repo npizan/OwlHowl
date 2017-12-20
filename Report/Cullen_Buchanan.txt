@@ -4,3 +4,4 @@ Created Trigger Function
 Created Sotre Procedures
 Improved efficiency of stored procedures
 Created ER Diagram
+Created slides for presentation
