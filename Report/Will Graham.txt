@@ -1,0 +1,6 @@
+Contributions:
+Set up Flask REST server and environment
+Configured backend OS settings
+Coded randomized handle generation
+Initial message GET and POST code, with modifications as needed
+Network paramter parsing
