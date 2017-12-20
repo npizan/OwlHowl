@@ -1,0 +1,6 @@
+Contributions include:
+- database configuration tweaks
+- implementation of certain logic on the server files - (radius determination algorithm, handle generator implementation, change rating  logic, message retrieval and packaging logic, message insertion logic)
+- most of the SQL logic for the flask files
+- helped resolve front end issue of message display
+- extensive server file testing (including database insertion, manipulation, and retrieval logic testing)
