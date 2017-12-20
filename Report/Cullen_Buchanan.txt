@@ -1,0 +1,6 @@
+Created DB Schema
+Adjusted schema as needed through out the project to include streach goals or modfication.
+Created Trigger Function
+Created Sotre Procedures
+Improved efficiency of stored procedures
+Created ER Diagram
