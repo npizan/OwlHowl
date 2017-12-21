@@ -1,0 +1,12 @@
+Ryan Godfrey's Contributions
+
+FRONT END:
+
+1. Researched, designed, and developed the initial GPS Android application. 
+
+2. Researched, designed, and developed the "Saved Locations" feature of the application.  
+
+3. Recorded the video for the OWL HOWL commercial.  
+
+4. Supported the other front end team members with different tasks in 
+   the overall development of OWL HOWL.  
